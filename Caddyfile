@@ -1,0 +1,26 @@
+# global options
+{
+	admin off
+	persist_config off
+	auto_https off
+	log {
+		format json
+	}
+	servers {
+		trusted_proxies static 0.0.0.0/0 ::/0
+	}
+}
+
+# Railway injects $PORT; default 8080 matches the domain target port
+:{$PORT:8080} {
+	log {
+		format json
+	}
+
+	rewrite /health /*
+
+	root * dist
+	encode gzip
+	file_server
+	try_files {path} /index.html
+}
