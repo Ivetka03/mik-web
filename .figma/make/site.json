@@ -1,7 +1,9 @@
 {
-  "description": "Create a fully responsive website that mirrors Figma designs with precision, offering users a seamless way to launch and customize their online presence.",
+  "title": "MIK",
+  "description": "Značka MIK – móda Michaely Kukletové. Kolekce, příběhy a individuální úpravy na míru.",
+  "language": "cs",
   "robots": {
-    "index": false
+    "index": true
   },
   "accessibility": {
     "addBypassLinks": false,
