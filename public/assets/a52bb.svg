@@ -1,0 +1,7 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="96" height="4" viewBox="0 0 96 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="line-accent-top">
+<line id="line-left-short" y1="1.5" x2="30" y2="1.5" stroke="#C3A06B" stroke-opacity="0.6"/>
+<circle id="dot-center" opacity="0.8" cx="48" cy="2" r="2" fill="#C3A06B"/>
+<line id="line-right-short" x1="66" y1="1.5" x2="96" y2="1.5" stroke="#C3A06B" stroke-opacity="0.6"/>
+</g>
+</svg>

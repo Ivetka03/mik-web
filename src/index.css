@@ -1,0 +1,101 @@
+@import 'tailwindcss';
+
+@font-face {
+  font-family: "Cormorant Garamond:Italic";
+  font-style: italic;
+  font-weight: 400;
+  src: url("https://static.figma.com/font/CormorantGaramond-Italic_wght__1") format("woff2");
+}
+
+@font-face {
+  font-family: "Cormorant Garamond:Light";
+  font-style: normal;
+  font-weight: 300;
+  src: url("https://static.figma.com/font/CormorantGaramond_wght__1") format("woff2");
+}
+
+@font-face {
+  font-family: "Cormorant Garamond:Regular";
+  font-style: normal;
+  font-weight: 400;
+  src: url("https://static.figma.com/font/CormorantGaramond_wght__1") format("woff2");
+}
+
+@font-face {
+  font-family: "Cormorant Garamond:SemiBold";
+  font-style: normal;
+  font-weight: 600;
+  src: url("https://static.figma.com/font/CormorantGaramond_wght__1") format("woff2");
+}
+
+@font-face {
+  font-family: "Manrope:Bold";
+  font-style: normal;
+  font-weight: 700;
+  src: url("https://static.figma.com/font/Manrope_wght__1") format("woff2");
+}
+
+@font-face {
+  font-family: "Manrope:ExtraBold";
+  font-style: normal;
+  font-weight: 800;
+  src: url("https://static.figma.com/font/Manrope_wght__1") format("woff2");
+}
+
+@font-face {
+  font-family: "Manrope:Regular";
+  font-style: normal;
+  font-weight: 400;
+  src: url("https://static.figma.com/font/Manrope_wght__1") format("woff2");
+}
+
+@font-face {
+  font-family: "Manrope:SemiBold";
+  font-style: normal;
+  font-weight: 600;
+  src: url("https://static.figma.com/font/Manrope_wght__1") format("woff2");
+}
+
+html,
+body,
+#root {
+  background-color: #000000;
+  overflow-x: hidden;
+}
+
+.storefront-door {
+  transition: transform 2.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.storefront-door-left {
+  transform: translateX(0);
+}
+
+.storefront-door-right {
+  transform: translateX(0);
+}
+
+.storefront-door-left.is-open {
+  transform: translateX(-102%);
+}
+
+.storefront-door-right.is-open {
+  transform: translateX(102%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .storefront-door {
+    transition: none;
+  }
+
+  .storefront-door-left,
+  .storefront-door-left.is-open {
+    transform: translateX(-102%);
+  }
+
+  .storefront-door-right,
+  .storefront-door-right.is-open {
+    transform: translateX(102%);
+  }
+}
