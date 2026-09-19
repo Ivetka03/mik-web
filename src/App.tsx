@@ -365,8 +365,8 @@ export default function App() {
       {/* HEADER */}
       <header className="border-b border-[#c3a06b] relative z-50 sticky top-0" style={goldSurface}>
         <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 py-5 flex items-center justify-between gap-3 sm:gap-8">
-          <div className="h-[75px] w-[100px] relative shrink-0">
-            <img alt="MIK" className="absolute inset-0 w-full h-full object-cover" src={imgHeaderLogo} />
+          <div className="relative h-[96px] w-[128px] sm:h-[120px] sm:w-[160px] shrink-0">
+            <img alt="MIK" className="absolute inset-0 h-full w-full object-contain mix-blend-screen saturate-[2] contrast-125" src={imgHeaderLogo} />
           </div>
           <nav className="hidden md:flex gap-8 lg:gap-12 items-center font-['Manrope:SemiBold'] font-semibold text-[#7a4e38] text-[13px] lg:text-[14px] tracking-[1.5px] uppercase">
             <a href="#pribehy" className="hover:text-[#f50067] transition-colors">O značce</a>
@@ -381,7 +381,7 @@ export default function App() {
       </header>
 
       {/* HERO SPLASH — self-opening storefront */}
-      <section id="uvod" className="relative w-full overflow-hidden" style={{ height: "calc(100dvh - 117px)", minHeight: "520px" }}>
+      <section id="uvod" className="relative w-full overflow-hidden" style={{ height: "calc(100dvh - 161px)", minHeight: "520px" }}>
         {/* Photo behind the window */}
         <div className="absolute inset-0 bg-black">
           <img
