@@ -271,6 +271,7 @@ export default function App() {
   const [formStatus, setFormStatus] = useState<"idle" | "sending" | "sent" | "activate" | "error">("idle");
   const [doorsOpen, setDoorsOpen] = useState(false);
   const [legalPage, setLegalPage] = useState<"gdpr" | "terms" | null>(null);
+  const [curtainsReady, setCurtainsReady] = useState(false);
 
   async function handleContactSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -311,6 +312,24 @@ export default function App() {
   }
 
   useEffect(() => {
+    let cancelled = false;
+    const img = new Image();
+    const markReady = () => {
+      if (!cancelled) setCurtainsReady(true);
+    };
+    img.addEventListener("load", markReady);
+    img.addEventListener("error", markReady);
+    img.src = imgStorefrontCurtains;
+    if (img.complete) markReady();
+    return () => {
+      cancelled = true;
+      img.removeEventListener("load", markReady);
+      img.removeEventListener("error", markReady);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!curtainsReady) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) {
       setDoorsOpen(true);
@@ -319,7 +338,7 @@ export default function App() {
 
     const timer = window.setTimeout(() => setDoorsOpen(true), 700);
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [curtainsReady]);
 
   useEffect(() => {
     const syncLegal = () => {
@@ -376,9 +395,9 @@ export default function App() {
         {/* Sliding glass doors */}
         <div aria-hidden className="absolute inset-0 z-20 pointer-events-none">
           <div className={`storefront-door storefront-door-left absolute inset-y-0 left-0 w-1/2 ${doorsOpen ? "is-open" : ""}`}>
-            <div className="absolute inset-0 overflow-hidden border-r border-[rgba(247,240,230,0.55)] shadow-[12px_0_40px_rgba(33,24,25,0.35)]">
+            <div className="absolute inset-0 overflow-hidden border-r border-[rgba(247,240,230,0.55)] shadow-[12px_0_40px_rgba(33,24,25,0.35)] bg-[#e6d4ae]">
               <div
-                className="absolute inset-0"
+                className="absolute inset-0 bg-[#e6d4ae]"
                 style={{
                   backgroundImage: `url(${imgStorefrontCurtains})`,
                   backgroundSize: "auto 108%",
@@ -408,9 +427,9 @@ export default function App() {
           </div>
 
           <div className={`storefront-door storefront-door-right absolute inset-y-0 right-0 w-1/2 ${doorsOpen ? "is-open" : ""}`}>
-            <div className="absolute inset-0 overflow-hidden border-l border-[rgba(247,240,230,0.55)] shadow-[-12px_0_40px_rgba(33,24,25,0.35)]">
+            <div className="absolute inset-0 overflow-hidden border-l border-[rgba(247,240,230,0.55)] shadow-[-12px_0_40px_rgba(33,24,25,0.35)] bg-[#e6d4ae]">
               <div
-                className="absolute inset-0"
+                className="absolute inset-0 bg-[#e6d4ae]"
                 style={{
                   backgroundImage: `url(${imgStorefrontCurtains})`,
                   backgroundSize: "auto 108%",
