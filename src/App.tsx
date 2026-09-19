@@ -4,7 +4,7 @@ import { LegalPage, privacyPolicy, termsOfService } from "./legal";
 
 const assetPathPrefix = "/assets";
 const imgHeaderLogo = `${assetPathPrefix}/727b1.png`;
-const imgSectionIntroSplash = `${assetPathPrefix}/uvod-intro.jpg`;
+const imgSectionIntroSplash = `${assetPathPrefix}/uvod-intro-v3.jpg`;
 const imgStorefrontCurtains = `${assetPathPrefix}/vylaha-zavesy-vlevo.jpg`;
 const imgRectangle = `${assetPathPrefix}/96521.png`;
 const imgRectangle1 = `${assetPathPrefix}/kolekce-bile-more-aligned.jpg`;
