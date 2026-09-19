@@ -5,7 +5,7 @@ import mikLogoMask from "./assets/mik-logo-mask.png";
 
 const assetPathPrefix = "/assets";
 const imgHeaderLogo = `${assetPathPrefix}/727b1.png`;
-const imgSectionIntroSplash = `${assetPathPrefix}/uvod-wide.jpg`;
+const imgSectionIntroSplash = `${assetPathPrefix}/uvod-hero-v2.jpg`;
 const imgStorefrontCurtains = `${assetPathPrefix}/vylaha-zavesy-vlevo.jpg`;
 const imgRectangle = `${assetPathPrefix}/96521.png`;
 const imgRectangle1 = `${assetPathPrefix}/kolekce-bile-more-aligned.jpg`;
