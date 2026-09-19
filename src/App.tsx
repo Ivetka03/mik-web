@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { LegalPage, privacyPolicy, termsOfService } from "./legal";
+import mikLogoMask from "./assets/mik-logo-mask.png";
 
 const assetPathPrefix = "/assets";
 const imgHeaderLogo = `${assetPathPrefix}/727b1.png`;
@@ -363,10 +364,18 @@ export default function App() {
     <div className="w-full min-h-dvh relative bg-black">
 
       {/* HEADER */}
-      <header className="border-b border-[#c3a06b] relative z-50 sticky top-0" style={goldSurface}>
+      <header className="border-b border-[#c3a06b] relative z-50 sticky top-0 isolate mix-blend-normal" style={goldSurface}>
         <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 py-5 flex items-center justify-between gap-3 sm:gap-8">
-          <div className="relative h-[96px] w-[128px] sm:h-[120px] sm:w-[160px] shrink-0">
-            <img alt="MIK" className="absolute inset-0 h-full w-full object-contain mix-blend-screen saturate-[2] contrast-125" src={imgHeaderLogo} />
+          <div className="relative h-[96px] w-[128px] sm:h-[120px] sm:w-[160px] shrink-0 mix-blend-normal">
+            <div
+              role="img"
+              aria-label="MIK"
+              className="mik-brand-mark absolute inset-0 bg-[#f50067]"
+              style={{
+                WebkitMaskImage: `url(${mikLogoMask})`,
+                maskImage: `url(${mikLogoMask})`,
+              }}
+            />
           </div>
           <nav className="hidden md:flex gap-8 lg:gap-12 items-center font-['Manrope:SemiBold'] font-semibold text-[#7a4e38] text-[13px] lg:text-[14px] tracking-[1.5px] uppercase">
             <a href="#pribehy" className="hover:text-[#f50067] transition-colors">O značce</a>

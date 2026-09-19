@@ -63,6 +63,19 @@ body,
   overflow-x: hidden;
 }
 
+.mik-brand-mark {
+  background-color: #f50067;
+  mix-blend-mode: normal;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  mask-mode: alpha;
+  -webkit-mask-mode: alpha;
+}
+
 .storefront-door {
   transition: transform 2.4s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform;
