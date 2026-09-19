@@ -69,7 +69,7 @@ function StorefrontDoorMark({ side }: { side: "left" | "right" }) {
         <div className="relative h-1 w-14 sm:w-20 lg:w-24">
           <img alt="" className="absolute inset-0 h-full w-full" src={imgLineAccentTop} />
         </div>
-        <p className="font-['Cormorant_Garamond:Light'] font-light uppercase text-[#e6d4ae] text-[12px] sm:text-sm lg:text-lg xl:text-[22px] tracking-[0.22em] sm:tracking-[0.3em] lg:tracking-[0.38em] [text-shadow:0_2px_8px_rgba(0,0,0,0.5)] whitespace-nowrap">
+        <p className="font-['Cormorant_Garamond:SemiBold'] sm:font-['Cormorant_Garamond:Light'] font-semibold sm:font-light uppercase text-[#7a4e38] sm:text-[#e6d4ae] text-[15px] sm:text-sm lg:text-lg xl:text-[22px] tracking-[0.16em] sm:tracking-[0.3em] lg:tracking-[0.38em] [text-shadow:0_1px_0_rgba(255,250,240,0.85),0_2px_6px_rgba(122,78,56,0.28)] sm:[text-shadow:0_2px_8px_rgba(0,0,0,0.5)] whitespace-nowrap">
           {isLeft ? "Vítej v" : "mém světě"}
         </p>
         <div className="relative h-1.5 w-16 sm:w-24 lg:w-32">
