@@ -366,17 +366,15 @@ export default function App() {
       {/* HEADER */}
       <header className="border-b border-[#c3a06b] relative z-50 sticky top-0 isolate mix-blend-normal" style={goldSurface}>
         <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 py-5 flex items-center justify-between gap-3 sm:gap-8">
-          <div className="relative h-[96px] w-[128px] sm:h-[120px] sm:w-[160px] shrink-0 mix-blend-normal">
+          <a href="#uvod" className="relative h-[120px] w-[160px] shrink-0 mix-blend-normal" aria-label="MiK — úvodní stránka">
             <div
-              role="img"
-              aria-label="MiK"
               className="mik-brand-mark absolute inset-0 bg-[#f50067]"
               style={{
                 WebkitMaskImage: `url(${mikLogoMask})`,
                 maskImage: `url(${mikLogoMask})`,
               }}
             />
-          </div>
+          </a>
           <nav className="hidden md:flex gap-8 lg:gap-12 items-center font-['Manrope:SemiBold'] font-semibold text-[#7a4e38] text-[13px] lg:text-[14px] tracking-[1.5px] uppercase">
             <a href="#pribehy" className="hover:text-[#f50067] transition-colors">O značce</a>
             <a href="#kolekce" className="hover:text-[#f50067] transition-colors">Kolekce</a>
@@ -624,10 +622,10 @@ export default function App() {
                 Krása může měnit příběhy.
               </h2>
               <p className="font-['Manrope:Regular'] font-normal leading-[1.8] text-[#e6d4ae] text-[16px] opacity-80">
-                Protéza je přirozenou součástí mého života i mého příběhu. Nikdy jsem ji nechtěla schovávat a nechci, aby to museli dělat jiní. Chci, aby móda MiK pomáhala psát příběhy s větší svobodou a radostí.
+                Protéza je přirozenou součástí mého života i mého příběhu. Nikdy jsem ji nechtěla schovávat a nechci, aby to museli dělat i jiní. Chci, aby móda MiK pomáhala psát příběhy s větší svobodou a radostí.
               </p>
               <p className="font-['Manrope:Regular'] font-normal leading-[1.8] text-[#e6d4ae] text-[16px] opacity-80">
-                Část výtěžku z prodeje každé kolekce putuje přímo na podporu konkrétního člověka, kterého osobně vybírám, a pomáhá mu financovat pořízení moderní bionické nebo estetické protézy. Každá kolekce tak dává vzniknout novému příběhu pomoci a návratu k nespoutanému životu.
+                Část výtěžku z prodeje každé kolekce putuje přímo na podporu konkrétního člověka, kterého osobně vybírám, a pomáhá mu financovat pořízení moderní bionické protézy. Každá kolekce tak dává vzniknout novému příběhu pomoci a návratu k nespoutanému životu.
               </p>
             </div>
             <div className="flex flex-wrap gap-8 items-center">
@@ -655,7 +653,7 @@ export default function App() {
                 Napište mi
               </SectionLabel>
               <h2 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.1] text-[#7a4e38] text-4xl lg:text-[56px]">
-                Zaujal <span className="font-['Cormorant_Garamond:SemiBold'] font-semibold">Vás</span> některý model?
+                Zaujal Vás některý model?
               </h2>
             </div>
             <p className="font-['Manrope:Regular'] font-normal leading-[1.7] text-[#7a4e38] text-[16px] opacity-80">
