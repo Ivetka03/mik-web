@@ -665,7 +665,10 @@ export default function App() {
             </p>
             <div className="flex flex-col gap-3 font-normal text-[#7a4e38] text-[14px]">
               <p className="font-['Manrope:Bold'] font-bold">Michaela Kukletová</p>
-              <p className="font-['Manrope:Regular'] opacity-70">mik@mikolection.com | +420 776 090 728</p>
+              <div className="flex flex-col gap-1 font-['Manrope:Regular'] opacity-70">
+                <a href="mailto:mik@mikolection.com" className="hover:opacity-100">mik@mikolection.com</a>
+                <a href="tel:+420776090728" className="hover:opacity-100">+420 776 090 728</a>
+              </div>
             </div>
           </div>
 
