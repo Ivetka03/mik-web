@@ -639,10 +639,8 @@ export default function App() {
               </button>
             </div>
           </div>
-          <div className="border border-[#c3a06b] p-4 shrink-0 w-full lg:w-auto">
-            <div className="w-full lg:w-[480px] h-[600px] relative overflow-hidden bg-black">
-              <img alt="MiK na tenisovém kurtu" className="absolute inset-0 w-full h-full object-cover object-center" src={imgRectangle8} />
-            </div>
+          <div className="w-full lg:w-[480px] h-[600px] relative overflow-hidden bg-black shrink-0">
+            <img alt="MiK na tenisovém kurtu" className="absolute inset-0 w-full h-full object-cover object-center" src={imgRectangle8} />
           </div>
         </div>
       </section>
