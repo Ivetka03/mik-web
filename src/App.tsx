@@ -510,7 +510,7 @@ export default function App() {
           <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6">
             <div className="flex flex-col gap-4 max-w-[700px]">
               <SectionLabel className="text-[#f50067]">
-                Nejnovější kolekce
+                Aktuální kolekce
               </SectionLabel>
               <h2 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.1] text-[#7a4e38] text-5xl lg:text-[64px]">
                 Odhalme se do krásy
