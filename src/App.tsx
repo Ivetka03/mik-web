@@ -5,7 +5,7 @@ import mikLogoMask from "./assets/mik-logo-mask.png";
 
 const assetPathPrefix = "/assets";
 const imgHeaderLogo = `${assetPathPrefix}/727b1.png`;
-const imgSectionIntroSplash = `${assetPathPrefix}/uvod-hero-v2.jpg`;
+const imgSectionIntroSplash = `${assetPathPrefix}/uvod-hero-v3.jpg`;
 const imgStorefrontCurtains = `${assetPathPrefix}/vylaha-zavesy-vlevo.jpg`;
 const imgRectangle = `${assetPathPrefix}/96521.png`;
 const imgRectangle1 = `${assetPathPrefix}/kolekce-bile-more-aligned.jpg`;
@@ -198,7 +198,7 @@ function WhatsAppChat() {
 
   function sendMessage(e: React.FormEvent) {
     e.preventDefault();
-    const text = draft.trim() || "Dobrý den, ráda bych se zeptala na kolekci MIK.";
+    const text = draft.trim() || "Dobrý den, ráda bych se zeptala na kolekci MiK.";
     window.open(
       `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`,
       "_blank",
@@ -290,7 +290,7 @@ export default function App() {
           email: form.email,
           phone: form.phone,
           message: form.message,
-          _subject: `Zpráva z webu MIK od ${form.name}`,
+          _subject: `Zpráva z webu MiK od ${form.name}`,
           _template: "table",
           _captcha: "false",
         }),
@@ -369,7 +369,7 @@ export default function App() {
           <div className="relative h-[96px] w-[128px] sm:h-[120px] sm:w-[160px] shrink-0 mix-blend-normal">
             <div
               role="img"
-              aria-label="MIK"
+              aria-label="MiK"
               className="mik-brand-mark absolute inset-0 bg-[#f50067]"
               style={{
                 WebkitMaskImage: `url(${mikLogoMask})`,
@@ -394,7 +394,7 @@ export default function App() {
         {/* Photo behind the window */}
         <div className="absolute inset-0 bg-black">
           <img
-            alt="Pohled do ateliéru MIK"
+            alt="Pohled do ateliéru MiK"
             className="absolute inset-0 h-full w-full object-cover object-center"
             src={imgSectionIntroSplash}
           />
@@ -481,7 +481,7 @@ export default function App() {
         <div className="flex flex-col gap-10 flex-1">
           <div className="flex flex-col gap-4">
             <SectionLabel className="text-[#c3a06b]">
-              Příběh za značkou MIK
+              Příběh za značkou MiK
             </SectionLabel>
             <h1 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.1] text-[#e6d4ae] text-4xl lg:text-5xl xl:text-[56px]">
               Nenašla jsem módu, kterou bych chtěla nosit. Tak jsem si ji začala navrhovat sama.
@@ -489,7 +489,7 @@ export default function App() {
           </div>
           <div className="flex flex-col gap-5 font-['Manrope:Regular'] font-normal leading-[1.7] text-[#e6d4ae] text-[16px] opacity-90">
             <p>
-              Chyběly mi barvy, ženskost a modely, které mají energii, nespoutanost a radost ze života. Nechtěla jsem oblečení, ve kterém se budu schovávat, krotit nebo zapadat. A tak vznikla MIK.
+              Chyběly mi barvy, ženskost a modely, které mají energii, nespoutanost a radost ze života. Nechtěla jsem oblečení, ve kterém se budu schovávat, krotit nebo zapadat. A tak vznikla MiK.
             </p>
             <p>
               Tvořím pro ženy, které milují život, sebe a chtějí se ve svých šatech cítit svobodně, žensky a trochu nebezpečně. Nechci tvořit další „správné" oblečení. Chci tvořit modely, které si obléknete a něco se stane. Narovnáte se. Usmějete se. Možná budete trochu víc flirtovat.
@@ -539,7 +539,7 @@ export default function App() {
         <div className="max-w-[1440px] mx-auto flex flex-col gap-14">
           <div className="flex flex-col gap-3">
             <SectionLabel className="text-[#f50066]">
-              MIK Atelier
+              MiK Atelier
             </SectionLabel>
             <h2 className="font-['Cormorant_Garamond:Regular'] font-normal text-[#e6d4ae] text-4xl lg:text-[48px]">
               Pohled do showroomu
@@ -624,7 +624,7 @@ export default function App() {
                 Krása může měnit příběhy.
               </h2>
               <p className="font-['Manrope:Regular'] font-normal leading-[1.8] text-[#e6d4ae] text-[16px] opacity-80">
-                Protéza je přirozenou součástí mého života i mého příběhu. Nikdy jsem ji nechtěla schovávat a nechci, aby to museli dělat jiní. Chci, aby móda MIK pomáhala psát příběhy s větší svobodou a radostí.
+                Protéza je přirozenou součástí mého života i mého příběhu. Nikdy jsem ji nechtěla schovávat a nechci, aby to museli dělat jiní. Chci, aby móda MiK pomáhala psát příběhy s větší svobodou a radostí.
               </p>
               <p className="font-['Manrope:Regular'] font-normal leading-[1.8] text-[#e6d4ae] text-[16px] opacity-80">
                 Část výtěžku z prodeje každé kolekce putuje přímo na podporu konkrétního člověka, kterého osobně vybírám, a pomáhá mu financovat pořízení moderní bionické nebo estetické protézy. Každá kolekce tak dává vzniknout novému příběhu pomoci a návratu k nespoutanému životu.
@@ -641,7 +641,7 @@ export default function App() {
           </div>
           <div className="border border-[#c3a06b] p-4 shrink-0 w-full lg:w-auto">
             <div className="w-full lg:w-[480px] h-[600px] relative overflow-hidden bg-black">
-              <img alt="MIK na tenisovém kurtu" className="absolute inset-0 w-full h-full object-cover object-center" src={imgRectangle8} />
+              <img alt="MiK na tenisovém kurtu" className="absolute inset-0 w-full h-full object-cover object-center" src={imgRectangle8} />
             </div>
           </div>
         </div>
@@ -657,7 +657,7 @@ export default function App() {
                 Napište mi
               </SectionLabel>
               <h2 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.1] text-[#7a4e38] text-4xl lg:text-[56px]">
-                Zaujal Vás některý model?
+                Zaujal <span className="font-['Cormorant_Garamond:SemiBold'] font-semibold">Vás</span> některý model?
               </h2>
             </div>
             <p className="font-['Manrope:Regular'] font-normal leading-[1.7] text-[#7a4e38] text-[16px] opacity-80">
@@ -771,10 +771,10 @@ export default function App() {
             {/* Logo + tagline */}
             <div className="flex flex-col gap-6 w-full lg:w-[300px]">
               <div className="w-[160px] h-[120px] relative">
-                <img alt="MIK" className="absolute inset-0 w-full h-full object-cover" src={imgHeaderLogo} />
+                <img alt="MiK" className="absolute inset-0 w-full h-full object-cover" src={imgHeaderLogo} />
               </div>
               <p className="font-['Manrope:Regular'] font-normal text-[#e6d4ae] text-[13px] leading-normal opacity-60">
-                Autorská módní značka designérky MIK. Tvořeno s vášní, barvami a nespoutanou radostí ze života.
+                Autorská módní značka designérky MiK. Tvořeno s vášní, barvami a nespoutanou radostí ze života.
               </p>
             </div>
             {/* Nav columns */}
@@ -789,7 +789,7 @@ export default function App() {
               <p className="font-['Manrope:Bold'] font-bold text-[#c3a06b] text-[12px] tracking-[2px] uppercase">Provozovatel</p>
               <p className="font-['Manrope:Regular'] font-normal text-[#e6d4ae] text-[14px] opacity-80 leading-relaxed">
                 Michaela Kukletová<br />
-                Autorská módní značka MIK<br />
+                Autorská módní značka MiK<br />
                 <a href="mailto:mik@mikolection.com" className="hover:opacity-100">mik@mikolection.com</a><br />
                 <a href="tel:+420776090728" className="hover:opacity-100">+420 776 090 728</a>
               </p>
@@ -806,7 +806,7 @@ export default function App() {
 
           {/* Copyright */}
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 font-['Manrope:Regular'] font-normal text-[#e6d4ae] text-[13px]">
-            <p className="opacity-40">Copyright © 2026 MIK Fashion. Všechna práva vyhrazena.</p>
+            <p className="opacity-40">Copyright © 2026 MiK Fashion. Všechna práva vyhrazena.</p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-6">
               <a href="#gdpr" className="opacity-40 hover:opacity-70 transition-opacity">Ochrana osobních údajů</a>
               <a href="#obchodni-podminky" className="opacity-40 hover:opacity-70 transition-opacity">Obchodní podmínky</a>

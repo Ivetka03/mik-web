@@ -5,7 +5,7 @@ export const privacyPolicy = {
     {
       heading: "1. Správce osobních údajů",
       body: [
-        "Správcem osobních údajů je Michaela Kukletová, provozovatelka autorské módní značky MIK, e-mail mik@mikolection.com, telefon +420 776 090 728 (dále jen „správce“).",
+        "Správcem osobních údajů je Michaela Kukletová, provozovatelka autorské módní značky MiK, e-mail mik@mikolection.com, telefon +420 776 090 728 (dále jen „správce“).",
         "Identifikační údaje potřebné k uzavření smlouvy a vystavení daňového dokladu (včetně IČO a sídla, pokud je správce podnikatelem) budou vždy uvedeny v potvrzení objednávky a na dokladu.",
       ],
     },
@@ -63,7 +63,7 @@ export const termsOfService = {
     {
       heading: "1. Provozovatel",
       body: [
-        "Tyto podmínky upravují používání webu značky MIK a poptávky oděvů a souvisejících služeb. Provozovatelem je Michaela Kukletová, e-mail mik@mikolection.com, telefon +420 776 090 728.",
+        "Tyto podmínky upravují používání webu značky MiK a poptávky oděvů a souvisejících služeb. Provozovatelem je Michaela Kukletová, e-mail mik@mikolection.com, telefon +420 776 090 728.",
         "Web slouží k prezentaci tvorby a k zaslání nezávazné poptávky. Kupní smlouva ani smlouva o dílo nevzniká odesláním formuláře, ale až výslovným potvrzením objednávky ze strany provozovatele (zpravidla e-mailem).",
       ],
     },
