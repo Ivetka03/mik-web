@@ -76,6 +76,16 @@ body,
   -webkit-mask-mode: alpha;
 }
 
+/* Photo must sit behind the doors from first paint — never html/body black. */
+.storefront-viewport,
+.storefront-photo {
+  background-color: #e6d4ae;
+  background-image: url("/assets/uvod-hero-v3.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .storefront-door {
   transition: transform 2.7s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform;

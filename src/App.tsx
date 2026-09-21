@@ -99,6 +99,29 @@ const archiveItems = [
   { img: null, title: "Znovuzrození", season: "Podzim / Zima 2021" },
 ];
 
+function useImageReady(src: string) {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const img = new Image();
+    const markReady = () => {
+      if (!cancelled) setReady(true);
+    };
+    img.addEventListener("load", markReady);
+    img.addEventListener("error", markReady);
+    img.src = src;
+    if (img.complete) markReady();
+    return () => {
+      cancelled = true;
+      img.removeEventListener("load", markReady);
+      img.removeEventListener("error", markReady);
+    };
+  }, [src]);
+
+  return ready;
+}
+
 function useVisibleSlides() {
   const [visibleCount, setVisibleCount] = useState(1);
 
@@ -272,7 +295,8 @@ export default function App() {
   const [formStatus, setFormStatus] = useState<"idle" | "sending" | "sent" | "activate" | "error">("idle");
   const [doorsOpen, setDoorsOpen] = useState(false);
   const [legalPage, setLegalPage] = useState<"gdpr" | "terms" | null>(null);
-  const [curtainsReady, setCurtainsReady] = useState(false);
+  const curtainsReady = useImageReady(imgStorefrontCurtains);
+  const introReady = useImageReady(imgSectionIntroSplash);
 
   async function handleContactSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -313,24 +337,7 @@ export default function App() {
   }
 
   useEffect(() => {
-    let cancelled = false;
-    const img = new Image();
-    const markReady = () => {
-      if (!cancelled) setCurtainsReady(true);
-    };
-    img.addEventListener("load", markReady);
-    img.addEventListener("error", markReady);
-    img.src = imgStorefrontCurtains;
-    if (img.complete) markReady();
-    return () => {
-      cancelled = true;
-      img.removeEventListener("load", markReady);
-      img.removeEventListener("error", markReady);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!curtainsReady) return;
+    if (!curtainsReady || !introReady) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) {
       setDoorsOpen(true);
@@ -339,7 +346,7 @@ export default function App() {
 
     const timer = window.setTimeout(() => setDoorsOpen(true), 700);
     return () => window.clearTimeout(timer);
-  }, [curtainsReady]);
+  }, [curtainsReady, introReady]);
 
   useEffect(() => {
     const syncLegal = () => {
@@ -388,13 +395,15 @@ export default function App() {
       </header>
 
       {/* HERO SPLASH — self-opening storefront */}
-      <section id="uvod" className="relative w-full overflow-hidden" style={{ height: "calc(100dvh - 161px)", minHeight: "520px" }}>
-        {/* Photo behind the window */}
-        <div className="absolute inset-0 bg-black">
+      <section id="uvod" className="storefront-viewport relative w-full overflow-hidden" style={{ height: "calc(100dvh - 161px)", minHeight: "520px" }}>
+        {/* Photo behind the window — CSS layer is always present so body black never shows */}
+        <div className="storefront-photo absolute inset-0">
           <img
             alt="Pohled do ateliéru MiK"
             className="absolute inset-0 h-full w-full object-cover object-center"
             src={imgSectionIntroSplash}
+            fetchPriority="high"
+            decoding="sync"
           />
           <div className="absolute inset-0 bg-[rgba(26,10,8,0.08)]" />
         </div>
