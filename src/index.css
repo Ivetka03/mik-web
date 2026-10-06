@@ -106,7 +106,7 @@ body,
 .storefront-viewport {
   isolation: isolate;
   background-color: #e6d4ae;
-  background-image: url("/assets/uvod-hero-v3.jpg");
+  background-image: url("/assets/uvod-hero-v7.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -115,7 +115,7 @@ body,
 .storefront-photo {
   z-index: 0;
   background-color: #e6d4ae;
-  background-image: url("/assets/uvod-hero-v3.jpg");
+  background-image: url("/assets/uvod-hero-v7.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

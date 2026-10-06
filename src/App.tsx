@@ -2,15 +2,14 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { LegalPage, privacyPolicy, termsOfService } from "./legal";
 import mikLogoMask from "./assets/mik-logo-mask.png";
+import { CollectionsIndex, ModelGallery } from "./collections";
+import { getCollectionBySlug, getModelBySlug, getPublishedCollections } from "./content/collections";
 
 const assetPathPrefix = "/assets";
 const imgHeaderLogo = `${assetPathPrefix}/727b1.png`;
-const imgSectionIntroSplash = `${assetPathPrefix}/uvod-hero-v3.jpg`;
+const imgSectionIntroSplash = `${assetPathPrefix}/uvod-hero-v7.png`;
 const imgStorefrontCurtains = `${assetPathPrefix}/vylaha-zavesy-vlevo.jpg`;
 const imgRectangle = `${assetPathPrefix}/96521.png`;
-const imgRectangle1 = `${assetPathPrefix}/kolekce-bile-more-aligned.jpg`;
-const imgRectangleSide = `${assetPathPrefix}/kolekce-barevne-more-aligned.jpg`;
-const imgRectangle2 = `${assetPathPrefix}/kolekce-zluty-overal-aligned.jpg`;
 const imgRectangle3 = `${assetPathPrefix}/59799.png`;
 const imgRectangle4 = `${assetPathPrefix}/dc86d.png`;
 const imgRectangle5 = `${assetPathPrefix}/1bc60.png`;
@@ -47,6 +46,53 @@ const goldSurface = {
   backgroundImage:
     "linear-gradient(115deg, rgba(255,247,217,0) 16%, rgba(255,250,229,0.22) 50%, rgba(255,247,217,0) 84%)",
 };
+
+function BrandStorySection({
+  id,
+  minFullPage = false,
+}: {
+  id?: string;
+  minFullPage?: boolean;
+}) {
+  return (
+    <section
+      id={id}
+      className={`relative overflow-hidden px-5 sm:px-10 lg:px-20 py-24 lg:py-[140px]${
+        minFullPage ? " min-h-[calc(100dvh-76px)] sm:min-h-[calc(100dvh-84px)]" : ""
+      }`}
+      style={goldSurface}
+    >
+      <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
+        <div className="mx-auto w-full max-w-[440px] lg:mx-0 lg:w-[500px] lg:max-w-none shrink-0 aspect-[580/720] relative">
+          <img alt="" className="absolute inset-0 w-full h-full object-cover" src={imgRectangle} />
+        </div>
+        <div className="flex flex-col gap-10 flex-1">
+          <div className="flex flex-col gap-4">
+            <SectionLabel className="text-[#f50067]">
+              Příběh za značkou MiK
+            </SectionLabel>
+            <h1 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.1] text-[#7a4e38] text-4xl lg:text-5xl xl:text-[56px]">
+              Nenašla jsem módu, kterou bych chtěla nosit. Tak jsem si ji začala navrhovat sama.
+            </h1>
+          </div>
+          <div className="flex flex-col gap-5 font-['Manrope:Regular'] font-normal leading-[1.7] text-[#7a4e38] text-[16px] opacity-90">
+            <p>
+              Chyběly mi barvy, ženskost a modely, které mají energii, nespoutanost a radost ze života. Nechtěla jsem oblečení, ve kterém se budu schovávat, krotit nebo zapadat. A tak vznikla MiK.
+            </p>
+            <p>
+              Tvořím pro ženy, které milují život, sebe a chtějí se ve svých šatech cítit svobodně, žensky a trochu nebezpečně. Nechci tvořit další „správné" oblečení. Chci tvořit modely, které si obléknete a něco se stane. Narovnáte se. Usmějete se. Možná budete trochu víc flirtovat.
+            </p>
+          </div>
+          <div className="border-l-[3px] border-[#f50067] pl-6">
+            <p className="font-['Cormorant_Garamond:Italic'] font-normal italic leading-[1.3] text-[#f50067] text-2xl lg:text-[32px]">
+              „Buď barevná. Buď odvážná. Buď ženská. A hlavně buď svoje."
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function StorefrontDoorMark({ side }: { side: "left" | "right" }) {
   const isLeft = side === "left";
@@ -311,8 +357,15 @@ export default function App() {
   const [doorsOpen, setDoorsOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [legalPage, setLegalPage] = useState<"gdpr" | "terms" | null>(null);
+  const [pageView, setPageView] = useState<"home" | "collections" | "contact" | "about">("home");
+  const [collectionRoute, setCollectionRoute] = useState<{
+    open: boolean;
+    slug: string | null;
+    modelSlug: string | null;
+  }>({ open: false, slug: null, modelSlug: null });
   const curtainsReady = useImageReady(imgStorefrontCurtains);
   const introReady = useImageReady(imgSectionIntroSplash);
+  const featuredCollection = getPublishedCollections()[0];
 
   async function handleContactSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -379,17 +432,67 @@ export default function App() {
   }, [curtainsReady, introReady]);
 
   useEffect(() => {
-    const syncLegal = () => {
+    const syncHash = () => {
       const hash = window.location.hash;
-      if (hash === "#gdpr") setLegalPage("gdpr");
-      else if (hash === "#obchodni-podminky") setLegalPage("terms");
-      else setLegalPage(null);
       setMenuOpen(false);
+      if (hash === "#gdpr") {
+        setLegalPage("gdpr");
+        setPageView("home");
+        setCollectionRoute({ open: false, slug: null, modelSlug: null });
+        return;
+      }
+      if (hash === "#obchodni-podminky") {
+        setLegalPage("terms");
+        setPageView("home");
+        setCollectionRoute({ open: false, slug: null, modelSlug: null });
+        return;
+      }
+      setLegalPage(null);
+      if (hash === "#pribehy") {
+        setPageView("about");
+        setCollectionRoute({ open: false, slug: null, modelSlug: null });
+        return;
+      }
+      if (hash === "#kontakt") {
+        setPageView("contact");
+        setCollectionRoute({ open: false, slug: null, modelSlug: null });
+        return;
+      }
+      if (hash === "#kolekce") {
+        setPageView("collections");
+        setCollectionRoute({ open: true, slug: null, modelSlug: null });
+        return;
+      }
+      const collectionMatch = hash.match(/^#kolekce\/([^/]+)(?:\/([^/]+))?$/);
+      if (collectionMatch) {
+        setPageView("collections");
+        setCollectionRoute({
+          open: true,
+          slug: decodeURIComponent(collectionMatch[1]),
+          modelSlug: collectionMatch[2] ? decodeURIComponent(collectionMatch[2]) : null,
+        });
+        return;
+      }
+      setPageView("home");
+      setCollectionRoute({ open: false, slug: null, modelSlug: null });
     };
-    syncLegal();
-    window.addEventListener("hashchange", syncLegal);
-    return () => window.removeEventListener("hashchange", syncLegal);
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+    return () => window.removeEventListener("hashchange", syncHash);
   }, []);
+
+  useEffect(() => {
+    if (pageView === "collections" || pageView === "contact" || pageView === "about") {
+      window.scrollTo(0, 0);
+      return;
+    }
+    const id = window.location.hash.replace(/^#/, "");
+    if (!id || id === "gdpr" || id === "obchodni-podminky") return;
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(id)?.scrollIntoView();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [pageView]);
 
   function closeLegal() {
     setLegalPage(null);
@@ -399,7 +502,7 @@ export default function App() {
   }
 
   return (
-    <div className="w-full min-h-dvh relative bg-[#e6d4ae]">
+    <div className={`w-full min-h-dvh relative ${pageView === "collections" ? "bg-black" : "bg-[#e6d4ae]"}`}>
 
       {/* HEADER */}
       <header className="mik-site-header border-b border-[#c3a06b] relative z-50 sticky top-0 isolate overflow-visible mix-blend-normal" style={goldSurface}>
@@ -465,6 +568,9 @@ export default function App() {
         )}
       </header>
 
+      {pageView === "collections" ? <CollectionsIndex /> : null}
+
+      <div className={pageView !== "home" ? "hidden" : undefined}>
       {/* HERO SPLASH — self-opening storefront */}
       <section id="uvod" className="storefront-viewport relative w-full overflow-hidden">
         {/* Photo behind the window — CSS layer is always present so body black never shows */}
@@ -547,66 +653,50 @@ export default function App() {
         </div>
       </section>
 
-      {/* LATEST COLLECTION */}
-      <section id="kolekce" className="relative overflow-hidden bg-black px-5 sm:px-10 lg:px-20 py-24 lg:py-[140px]">
-        <div className="relative z-10 max-w-[1440px] mx-auto flex flex-col gap-16">
-          <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6">
-            <div className="flex flex-col gap-4 max-w-[700px]">
-              <SectionLabel className="text-[#f50067]">
-                Aktuální kolekce
-              </SectionLabel>
-              <h2 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.1] text-[#e6d4ae] text-5xl lg:text-[64px]">
-                Odhalme se do krásy
-              </h2>
-              <p className="font-['Manrope:Regular'] font-normal leading-[1.6] text-[#e6d4ae] text-[18px] opacity-80">
-                Do slunce. Do barev. Do rozkvetlé přírody. Léto si žádá lehkost, ženskost a trochu odvahy.
-              </p>
-            </div>
-            <button className="border border-[#c3a06b] px-6 sm:px-9 py-3 sm:py-4 font-['Manrope:Bold'] font-bold text-[#e6d4ae] text-[12px] sm:text-[14px] tracking-[1.5px] sm:tracking-[2px] uppercase text-center w-full sm:w-auto shrink-0 hover:bg-[#c3a06b] hover:text-[#1b1412] transition-colors">
-              PROHLÉDNOUT CELOU KOLEKCI
-            </button>
-          </div>
-          <div className="mx-auto grid w-full max-w-[300px] grid-cols-1 gap-6 md:max-w-[1040px] md:grid-cols-3 md:gap-8">
-            {[imgRectangle1, imgRectangleSide, imgRectangle2].map((img, i) => (
-              <div key={i} className="group relative aspect-[380/500] overflow-hidden border border-[#c3a06b] bg-black">
-                <img alt="" className="absolute inset-0 h-full w-full object-cover object-[center_top] transition-transform duration-700 ease-out group-hover:scale-[1.07]" src={img} />
+      {featuredCollection ? (
+        <section className="relative overflow-hidden bg-black px-5 sm:px-10 lg:px-20 py-24 lg:py-[140px]">
+          <div className="relative z-10 max-w-[1440px] mx-auto flex flex-col gap-10 lg:gap-16">
+            <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6">
+              <div className="flex flex-col gap-4 max-w-[700px]">
+                <SectionLabel className="text-[#f50067]">
+                  Aktuální kolekce
+                </SectionLabel>
+                <h2 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.15] text-[#e6d4ae] text-[32px] sm:text-5xl lg:text-[64px]">
+                  {featuredCollection.name}
+                </h2>
+                {featuredCollection.intro ? (
+                  <p className="font-['Manrope:Regular'] font-normal leading-[1.6] text-[#e6d4ae] text-[15px] sm:text-[18px] opacity-80">
+                    {featuredCollection.intro}
+                  </p>
+                ) : null}
               </div>
-            ))}
+              <a
+                href="#kolekce"
+                className="border border-[#c3a06b] px-6 sm:px-9 py-3 sm:py-4 font-['Manrope:Bold'] font-bold text-[#e6d4ae] text-[12px] sm:text-[14px] tracking-[1.5px] sm:tracking-[2px] uppercase text-center w-full sm:w-auto shrink-0 hover:bg-[#c3a06b] hover:text-[#1b1412] transition-colors"
+              >
+                Všechny kolekce
+              </a>
+            </div>
+            <div className="mx-auto grid w-full max-w-[1040px] grid-cols-3 gap-2 sm:gap-6 md:gap-8">
+              {featuredCollection.models.map((model) => (
+                <a
+                  key={model.id}
+                  href={`#kolekce/${featuredCollection.slug}/${model.slug}`}
+                  className="group relative aspect-[380/500] overflow-hidden border border-[#c3a06b] bg-black"
+                >
+                  <img
+                    alt={model.name}
+                    className="absolute inset-0 h-full w-full object-cover object-[center_top] transition-transform duration-700 ease-out group-hover:scale-[1.07]"
+                    src={model.coverImage}
+                  />
+                </a>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
-      {/* STORY SECTION */}
-      <section id="pribehy" className="relative overflow-hidden px-5 sm:px-10 lg:px-20 py-24 lg:py-[140px]" style={goldSurface}>
-        <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
-        <div className="w-full lg:w-[580px] shrink-0 aspect-[580/720] relative">
-          <img alt="" className="absolute inset-0 w-full h-full object-cover" src={imgRectangle} />
-        </div>
-        <div className="flex flex-col gap-10 flex-1">
-          <div className="flex flex-col gap-4">
-            <SectionLabel className="text-[#f50067]">
-              Příběh za značkou MiK
-            </SectionLabel>
-            <h1 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.1] text-[#7a4e38] text-4xl lg:text-5xl xl:text-[56px]">
-              Nenašla jsem módu, kterou bych chtěla nosit. Tak jsem si ji začala navrhovat sama.
-            </h1>
-          </div>
-          <div className="flex flex-col gap-5 font-['Manrope:Regular'] font-normal leading-[1.7] text-[#7a4e38] text-[16px] opacity-90">
-            <p>
-              Chyběly mi barvy, ženskost a modely, které mají energii, nespoutanost a radost ze života. Nechtěla jsem oblečení, ve kterém se budu schovávat, krotit nebo zapadat. A tak vznikla MiK.
-            </p>
-            <p>
-              Tvořím pro ženy, které milují život, sebe a chtějí se ve svých šatech cítit svobodně, žensky a trochu nebezpečně. Nechci tvořit další „správné" oblečení. Chci tvořit modely, které si obléknete a něco se stane. Narovnáte se. Usmějete se. Možná budete trochu víc flirtovat.
-            </p>
-          </div>
-          <div className="border-l-[3px] border-[#f50067] pl-6">
-            <p className="font-['Cormorant_Garamond:Italic'] font-normal italic leading-[1.3] text-[#f50067] text-2xl lg:text-[32px]">
-              „Buď barevná. Buď odvážná. Buď ženská. A hlavně buď svoje."
-            </p>
-          </div>
-        </div>
-        </div>
-      </section>
+      <BrandStorySection />
 
       {/* LOOKBOOK / SHOWROOM — hidden until content is ready */}
       {SHOW_STUDIO_AND_ARCHIVE && (
@@ -714,14 +804,17 @@ export default function App() {
               </button>
             </div>
           </div>
-          <div className="w-full lg:w-[480px] h-[600px] relative overflow-hidden bg-black shrink-0">
+          <div className="mx-auto w-full max-w-[380px] lg:mx-0 lg:w-[400px] lg:max-w-none shrink-0 aspect-[380/500] relative overflow-hidden border border-[#c3a06b] bg-black">
             <img alt="MiK na tenisovém kurtu" className="absolute inset-0 w-full h-full object-cover object-center" src={imgRectangle8} />
           </div>
         </div>
       </section>
+      </div>
 
-      {/* CONTACT SECTION */}
-      <section id="kontakt" className="relative overflow-hidden px-5 sm:px-10 lg:px-20 py-24 lg:py-[140px]" style={goldSurface}>
+      {pageView === "about" ? <BrandStorySection id="pribehy" minFullPage /> : null}
+
+      {pageView === "contact" ? (
+      <section id="kontakt" className="relative overflow-hidden px-5 sm:px-10 lg:px-20 py-24 lg:py-[140px] min-h-[calc(100dvh-76px)] sm:min-h-[calc(100dvh-84px)]" style={goldSurface}>
         <div className="relative z-10 max-w-[1440px] mx-auto flex flex-col lg:flex-row items-start justify-between gap-16">
           {/* Left: info */}
           <div className="flex flex-col gap-8 lg:w-[500px] shrink-0">
@@ -839,6 +932,7 @@ export default function App() {
           </form>
         </div>
       </section>
+      ) : null}
 
       {/* FOOTER */}
       <footer className="bg-black border-t border-[#c3a06b] px-5 sm:px-10 lg:px-20 pt-20 pb-12">
@@ -893,6 +987,22 @@ export default function App() {
       <WhatsAppChat />
       {legalPage === "gdpr" && <LegalPage doc={privacyPolicy} onClose={closeLegal} />}
       {legalPage === "terms" && <LegalPage doc={termsOfService} onClose={closeLegal} />}
+      {(() => {
+        if (!collectionRoute.open || !collectionRoute.slug || !collectionRoute.modelSlug) return null;
+        const collection = getCollectionBySlug(collectionRoute.slug);
+        if (!collection?.published) return null;
+        const model = getModelBySlug(collection, collectionRoute.modelSlug);
+        if (!model) return null;
+        return (
+          <ModelGallery
+            collection={collection}
+            model={model}
+            onClose={() => {
+              window.location.hash = "#kolekce";
+            }}
+          />
+        );
+      })()}
     </div>
   );
 }
