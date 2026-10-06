@@ -83,6 +83,13 @@ function StorefrontDoorMark({ side }: { side: "left" | "right" }) {
 
 const SHOW_STUDIO_AND_ARCHIVE = false;
 
+const navItems = [
+  { href: "#pribehy", label: "O značce" },
+  { href: "#kolekce", label: "Kolekce" },
+  { href: "#pomahame", label: "Pomáháme" },
+  { href: "#kontakt", label: "Kontakt" },
+];
+
 const lookbookItems = [
   { img: imgRectangle3 },
   { img: imgRectangle4 },
@@ -106,7 +113,15 @@ function useImageReady(src: string) {
     let cancelled = false;
     const img = new Image();
     const markReady = () => {
-      if (!cancelled) setReady(true);
+      if (cancelled) return;
+      const finish = () => {
+        if (!cancelled) setReady(true);
+      };
+      if (typeof img.decode === "function") {
+        img.decode().then(finish, finish);
+      } else {
+        finish();
+      }
     };
     img.addEventListener("load", markReady);
     img.addEventListener("error", markReady);
@@ -294,6 +309,7 @@ export default function App() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [formStatus, setFormStatus] = useState<"idle" | "sending" | "sent" | "activate" | "error">("idle");
   const [doorsOpen, setDoorsOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [legalPage, setLegalPage] = useState<"gdpr" | "terms" | null>(null);
   const curtainsReady = useImageReady(imgStorefrontCurtains);
   const introReady = useImageReady(imgSectionIntroSplash);
@@ -344,8 +360,22 @@ export default function App() {
       return;
     }
 
-    const timer = window.setTimeout(() => setDoorsOpen(true), 700);
-    return () => window.clearTimeout(timer);
+    let cancelled = false;
+    let raf2 = 0;
+    let timer = 0;
+    const raf1 = window.requestAnimationFrame(() => {
+      raf2 = window.requestAnimationFrame(() => {
+        timer = window.setTimeout(() => {
+          if (!cancelled) setDoorsOpen(true);
+        }, 280);
+      });
+    });
+    return () => {
+      cancelled = true;
+      window.cancelAnimationFrame(raf1);
+      window.cancelAnimationFrame(raf2);
+      window.clearTimeout(timer);
+    };
   }, [curtainsReady, introReady]);
 
   useEffect(() => {
@@ -354,6 +384,7 @@ export default function App() {
       if (hash === "#gdpr") setLegalPage("gdpr");
       else if (hash === "#obchodni-podminky") setLegalPage("terms");
       else setLegalPage(null);
+      setMenuOpen(false);
     };
     syncLegal();
     window.addEventListener("hashchange", syncLegal);
@@ -368,50 +399,89 @@ export default function App() {
   }
 
   return (
-    <div className="w-full min-h-dvh relative bg-black">
+    <div className="w-full min-h-dvh relative bg-[#e6d4ae]">
 
       {/* HEADER */}
-      <header className="border-b border-[#c3a06b] relative z-50 sticky top-0 isolate mix-blend-normal" style={goldSurface}>
-        <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 py-5 flex items-center justify-between gap-3 sm:gap-8">
-          <a href="#uvod" className="relative h-[120px] w-[160px] shrink-0 mix-blend-normal" aria-label="MiK — úvodní stránka">
+      <header className="mik-site-header border-b border-[#c3a06b] relative z-50 sticky top-0 isolate overflow-visible mix-blend-normal" style={goldSurface}>
+        <div className="max-w-[1440px] mx-auto h-full px-5 sm:px-10 lg:px-20 flex items-center justify-between gap-3">
+          <a href="#uvod" className="relative z-[1] h-11 w-[128px] sm:h-12 sm:w-[150px] shrink-0 overflow-visible mix-blend-normal" aria-label="MiK — úvodní stránka" onClick={() => setMenuOpen(false)}>
             <div
-              className="mik-brand-mark absolute inset-0 bg-[#f50067]"
+              className="mik-brand-mark pointer-events-none absolute left-1/2 top-1/2 h-[92px] w-[168px] sm:h-[100px] sm:w-[182px] -translate-x-1/2 -translate-y-1/2 bg-[#f50067]"
               style={{
                 WebkitMaskImage: `url(${mikLogoMask})`,
                 maskImage: `url(${mikLogoMask})`,
               }}
             />
           </a>
-          <nav className="hidden md:flex gap-8 lg:gap-12 items-center font-['Manrope:SemiBold'] font-semibold text-[#7a4e38] text-[13px] lg:text-[14px] tracking-[1.5px] uppercase">
-            <a href="#pribehy" className="hover:text-[#f50067] transition-colors">O značce</a>
-            <a href="#kolekce" className="hover:text-[#f50067] transition-colors">Kolekce</a>
-            <a href="#pomahame" className="hover:text-[#f50067] transition-colors">Pomáháme</a>
-            <a href="#kontakt" className="hover:text-[#f50067] transition-colors">Kontakt</a>
-          </nav>
-          <a href="#kolekce" className="bg-[#f50067] border border-[#f50067] px-4 sm:px-7 lg:px-9 py-3 sm:py-4 font-['Manrope:Bold'] font-bold text-[#e6d4ae] text-[11px] sm:text-[13px] lg:text-[14px] tracking-[1px] sm:tracking-[2px] uppercase text-center hover:bg-[#d4005a] transition-colors">
-            OBJEVIT KOLEKCI
-          </a>
+          <div className="flex items-center gap-5 lg:gap-6 shrink-0">
+            <nav className="hidden md:flex gap-5 lg:gap-6 items-center font-['Manrope:SemiBold'] font-semibold text-[#7a4e38] text-[13px] lg:text-[14px] tracking-[1.5px] uppercase">
+              {navItems.map((item) => (
+                <a key={item.href} href={item.href} className="hover:text-[#f50067] transition-colors">
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+            <a href="#kolekce" className="hidden md:inline-flex bg-[#f50067] border border-[#f50067] px-4 sm:px-7 lg:px-8 py-2 sm:py-2.5 font-['Manrope:Bold'] font-bold text-[#e6d4ae] text-[11px] sm:text-[13px] lg:text-[14px] tracking-[1px] sm:tracking-[2px] uppercase text-center hover:bg-[#d4005a] transition-colors">
+              OBJEVIT KOLEKCI
+            </a>
+            <button
+              type="button"
+              className="md:hidden relative z-[1] flex h-11 w-11 shrink-0 flex-col items-center justify-center gap-[5px]"
+              aria-expanded={menuOpen}
+              aria-controls="mobile-nav"
+              aria-label={menuOpen ? "Zavřít menu" : "Otevřít menu"}
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              <span className={`block h-[1.5px] w-5 bg-[#7a4e38] transition-transform duration-200 ${menuOpen ? "translate-y-[6.5px] rotate-45" : ""}`} />
+              <span className={`block h-[1.5px] w-5 bg-[#7a4e38] transition-opacity duration-200 ${menuOpen ? "opacity-0" : ""}`} />
+              <span className={`block h-[1.5px] w-5 bg-[#7a4e38] transition-transform duration-200 ${menuOpen ? "-translate-y-[6.5px] -rotate-45" : ""}`} />
+            </button>
+          </div>
         </div>
+        {menuOpen && (
+          <nav
+            id="mobile-nav"
+            className="md:hidden absolute inset-x-0 top-full border-b border-[#c3a06b] px-5 py-3 flex flex-col"
+            style={goldSurface}
+          >
+            {navItems.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="py-3 font-['Manrope:SemiBold'] font-semibold text-[#7a4e38] text-[13px] tracking-[1.5px] uppercase hover:text-[#f50067] transition-colors"
+                onClick={() => setMenuOpen(false)}
+              >
+                {item.label}
+              </a>
+            ))}
+            <a
+              href="#kolekce"
+              className="mt-1 mb-2 bg-[#f50067] border border-[#f50067] px-4 py-2.5 font-['Manrope:Bold'] font-bold text-[#e6d4ae] text-[12px] tracking-[1.5px] uppercase text-center hover:bg-[#d4005a] transition-colors"
+              onClick={() => setMenuOpen(false)}
+            >
+              OBJEVIT KOLEKCI
+            </a>
+          </nav>
+        )}
       </header>
 
       {/* HERO SPLASH — self-opening storefront */}
-      <section id="uvod" className="storefront-viewport relative w-full overflow-hidden" style={{ height: "calc(100dvh - 161px)", minHeight: "520px" }}>
+      <section id="uvod" className="storefront-viewport relative w-full overflow-hidden">
         {/* Photo behind the window — CSS layer is always present so body black never shows */}
         <div className="storefront-photo absolute inset-0">
           <img
             alt="Pohled do ateliéru MiK"
-            className="absolute inset-0 h-full w-full object-cover object-center"
+            className="absolute inset-0 h-full w-full object-cover object-center bg-[#e6d4ae]"
             src={imgSectionIntroSplash}
             fetchPriority="high"
-            decoding="sync"
+            decoding="async"
           />
-          <div className="absolute inset-0 bg-[rgba(26,10,8,0.08)]" />
         </div>
 
         {/* Sliding glass doors */}
         <div aria-hidden className="absolute inset-0 z-20 pointer-events-none">
           <div className={`storefront-door storefront-door-left absolute inset-y-0 left-0 w-1/2 ${doorsOpen ? "is-open" : ""}`}>
-            <div className="absolute inset-0 overflow-hidden border-r border-[rgba(247,240,230,0.55)] shadow-[12px_0_40px_rgba(33,24,25,0.35)] bg-[#e6d4ae]">
+            <div className="absolute inset-0 overflow-hidden border-r border-[rgba(247,240,230,0.55)] shadow-[6px_0_18px_rgba(33,24,25,0.18)] bg-[#e6d4ae]">
               <div
                 className="absolute inset-0 bg-[#e6d4ae]"
                 style={{
@@ -426,7 +496,6 @@ export default function App() {
                 style={{
                   backgroundImage:
                     "linear-gradient(90deg, rgba(247,240,230,0.18) 0%, rgba(195,160,107,0.38) 28%, rgba(247,240,230,0.52) 52%, rgba(195,160,107,0.32) 78%, rgba(33,24,25,0.28) 100%)",
-                  backdropFilter: "blur(6px) saturate(1.1)",
                 }}
               />
               <div className="absolute inset-0 bg-[rgba(33,24,25,0.12)]" />
@@ -443,7 +512,7 @@ export default function App() {
           </div>
 
           <div className={`storefront-door storefront-door-right absolute inset-y-0 right-0 w-1/2 ${doorsOpen ? "is-open" : ""}`}>
-            <div className="absolute inset-0 overflow-hidden border-l border-[rgba(247,240,230,0.55)] shadow-[-12px_0_40px_rgba(33,24,25,0.35)] bg-[#e6d4ae]">
+            <div className="absolute inset-0 overflow-hidden border-l border-[rgba(247,240,230,0.55)] shadow-[-6px_0_18px_rgba(33,24,25,0.18)] bg-[#e6d4ae]">
               <div
                 className="absolute inset-0 bg-[#e6d4ae]"
                 style={{
@@ -459,7 +528,6 @@ export default function App() {
                 style={{
                   backgroundImage:
                     "linear-gradient(270deg, rgba(247,240,230,0.18) 0%, rgba(195,160,107,0.38) 28%, rgba(247,240,230,0.52) 52%, rgba(195,160,107,0.32) 78%, rgba(33,24,25,0.28) 100%)",
-                  backdropFilter: "blur(6px) saturate(1.1)",
                 }}
               />
               <div className="absolute inset-0 bg-[rgba(33,24,25,0.12)]" />
@@ -475,26 +543,55 @@ export default function App() {
             </div>
           </div>
 
-          <div className={`absolute top-0 bottom-0 left-1/2 z-10 w-[3px] -translate-x-1/2 mix-blend-screen transition-opacity duration-700 ${doorsOpen ? "opacity-0" : "opacity-100"}`} style={{ backgroundImage: "linear-gradient(180deg, rgba(195,160,107,0) 0%, rgba(247,240,230,0.8) 15%, rgb(255,232,160) 35%, rgb(255,250,224) 50%, rgb(255,232,160) 65%, rgba(247,240,230,0.8) 85%, rgba(195,160,107,0) 100%)" }} />
+          <div className={`absolute top-0 bottom-0 left-1/2 z-10 w-[3px] -translate-x-1/2 transition-opacity duration-[1400ms] ${doorsOpen ? "opacity-0" : "opacity-100"}`} style={{ backgroundImage: "linear-gradient(180deg, rgba(195,160,107,0) 0%, rgba(247,240,230,0.8) 15%, rgb(255,232,160) 35%, rgb(255,250,224) 50%, rgb(255,232,160) 65%, rgba(247,240,230,0.8) 85%, rgba(195,160,107,0) 100%)" }} />
+        </div>
+      </section>
+
+      {/* LATEST COLLECTION */}
+      <section id="kolekce" className="relative overflow-hidden bg-black px-5 sm:px-10 lg:px-20 py-24 lg:py-[140px]">
+        <div className="relative z-10 max-w-[1440px] mx-auto flex flex-col gap-16">
+          <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6">
+            <div className="flex flex-col gap-4 max-w-[700px]">
+              <SectionLabel className="text-[#f50067]">
+                Aktuální kolekce
+              </SectionLabel>
+              <h2 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.1] text-[#e6d4ae] text-5xl lg:text-[64px]">
+                Odhalme se do krásy
+              </h2>
+              <p className="font-['Manrope:Regular'] font-normal leading-[1.6] text-[#e6d4ae] text-[18px] opacity-80">
+                Do slunce. Do barev. Do rozkvetlé přírody. Léto si žádá lehkost, ženskost a trochu odvahy.
+              </p>
+            </div>
+            <button className="border border-[#c3a06b] px-6 sm:px-9 py-3 sm:py-4 font-['Manrope:Bold'] font-bold text-[#e6d4ae] text-[12px] sm:text-[14px] tracking-[1.5px] sm:tracking-[2px] uppercase text-center w-full sm:w-auto shrink-0 hover:bg-[#c3a06b] hover:text-[#1b1412] transition-colors">
+              PROHLÉDNOUT CELOU KOLEKCI
+            </button>
+          </div>
+          <div className="mx-auto grid w-full max-w-[300px] grid-cols-1 gap-6 md:max-w-[1040px] md:grid-cols-3 md:gap-8">
+            {[imgRectangle1, imgRectangleSide, imgRectangle2].map((img, i) => (
+              <div key={i} className="group relative aspect-[380/500] overflow-hidden border border-[#c3a06b] bg-black">
+                <img alt="" className="absolute inset-0 h-full w-full object-cover object-[center_top] transition-transform duration-700 ease-out group-hover:scale-[1.07]" src={img} />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* STORY SECTION */}
-      <section id="pribehy" className="bg-black px-5 sm:px-10 lg:px-20 py-24 lg:py-[140px]">
+      <section id="pribehy" className="relative overflow-hidden px-5 sm:px-10 lg:px-20 py-24 lg:py-[140px]" style={goldSurface}>
         <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
         <div className="w-full lg:w-[580px] shrink-0 aspect-[580/720] relative">
           <img alt="" className="absolute inset-0 w-full h-full object-cover" src={imgRectangle} />
         </div>
         <div className="flex flex-col gap-10 flex-1">
           <div className="flex flex-col gap-4">
-            <SectionLabel className="text-[#c3a06b]">
+            <SectionLabel className="text-[#f50067]">
               Příběh za značkou MiK
             </SectionLabel>
-            <h1 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.1] text-[#e6d4ae] text-4xl lg:text-5xl xl:text-[56px]">
+            <h1 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.1] text-[#7a4e38] text-4xl lg:text-5xl xl:text-[56px]">
               Nenašla jsem módu, kterou bych chtěla nosit. Tak jsem si ji začala navrhovat sama.
             </h1>
           </div>
-          <div className="flex flex-col gap-5 font-['Manrope:Regular'] font-normal leading-[1.7] text-[#e6d4ae] text-[16px] opacity-90">
+          <div className="flex flex-col gap-5 font-['Manrope:Regular'] font-normal leading-[1.7] text-[#7a4e38] text-[16px] opacity-90">
             <p>
               Chyběly mi barvy, ženskost a modely, které mají energii, nespoutanost a radost ze života. Nechtěla jsem oblečení, ve kterém se budu schovávat, krotit nebo zapadat. A tak vznikla MiK.
             </p>
@@ -508,35 +605,6 @@ export default function App() {
             </p>
           </div>
         </div>
-        </div>
-      </section>
-
-      {/* LATEST COLLECTION */}
-      <section id="kolekce" className="relative overflow-hidden px-5 sm:px-10 lg:px-20 py-24 lg:py-[140px]" style={goldSurface}>
-        <div className="relative z-10 max-w-[1440px] mx-auto flex flex-col gap-16">
-          <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6">
-            <div className="flex flex-col gap-4 max-w-[700px]">
-              <SectionLabel className="text-[#f50067]">
-                Aktuální kolekce
-              </SectionLabel>
-              <h2 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.1] text-[#7a4e38] text-5xl lg:text-[64px]">
-                Odhalme se do krásy
-              </h2>
-              <p className="font-['Manrope:Regular'] font-normal leading-[1.6] text-[#7a4e38] text-[18px] opacity-80">
-                Do slunce. Do barev. Do rozkvetlé přírody. Léto si žádá lehkost, ženskost a trochu odvahy.
-              </p>
-            </div>
-            <button className="border border-[#7a4e38] px-6 sm:px-9 py-3 sm:py-4 font-['Manrope:Bold'] font-bold text-[#7a4e38] text-[12px] sm:text-[14px] tracking-[1.5px] sm:tracking-[2px] uppercase text-center w-full sm:w-auto shrink-0 hover:bg-[#7a4e38] hover:text-[#e6d4ae] transition-colors">
-              PROHLÉDNOUT CELOU KOLEKCI
-            </button>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[imgRectangle1, imgRectangleSide, imgRectangle2].map((img, i) => (
-              <div key={i} className="aspect-[380/547] relative overflow-hidden bg-[#c3a06b]">
-                <img alt="" className="absolute inset-0 w-full h-full object-cover object-[center_top]" src={img} />
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 

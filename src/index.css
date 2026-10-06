@@ -59,8 +59,28 @@
 html,
 body,
 #root {
-  background-color: #000000;
+  /* Beige first paint — never let body black show through opening doors. */
+  background-color: #e6d4ae;
   overflow-x: hidden;
+}
+
+.mik-site-header {
+  height: 76px;
+}
+
+.storefront-viewport {
+  height: calc(100dvh - 77px);
+  min-height: 520px;
+}
+
+@media (min-width: 640px) {
+  .mik-site-header {
+    height: 84px;
+  }
+
+  .storefront-viewport {
+    height: calc(100dvh - 85px);
+  }
 }
 
 .mik-brand-mark {
@@ -74,11 +94,17 @@ body,
   mask-size: contain;
   mask-mode: alpha;
   -webkit-mask-mode: alpha;
+  /* Slight stroke fattening so the script reads bolder in a slim bar */
+  filter:
+    drop-shadow(0.55px 0 0 #f50067)
+    drop-shadow(-0.55px 0 0 #f50067)
+    drop-shadow(0 0.55px 0 #f50067)
+    drop-shadow(0 -0.55px 0 #f50067);
 }
 
 /* Photo must sit behind the doors from first paint — never html/body black. */
-.storefront-viewport,
-.storefront-photo {
+.storefront-viewport {
+  isolation: isolate;
   background-color: #e6d4ae;
   background-image: url("/assets/uvod-hero-v3.jpg");
   background-position: center;
@@ -86,9 +112,22 @@ body,
   background-size: cover;
 }
 
+.storefront-photo {
+  z-index: 0;
+  background-color: #e6d4ae;
+  background-image: url("/assets/uvod-hero-v3.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transform: translateZ(0);
+}
+
+.storefront-photo img {
+  background-color: #e6d4ae;
+}
+
 .storefront-door {
-  transition: transform 2.7s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform;
+  transition: transform 3.8s cubic-bezier(0.33, 0.04, 0.22, 1);
 }
 
 .storefront-door-left {
