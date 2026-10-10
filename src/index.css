@@ -146,7 +146,41 @@ body,
   transform: translateX(102%);
 }
 
+.mik-lightbox {
+  opacity: 0;
+  transition: opacity 280ms ease;
+}
+
+.mik-lightbox.is-open {
+  opacity: 1;
+}
+
+.mik-lightbox-photo {
+  animation: mik-lightbox-photo-in 320ms ease-out;
+}
+
+@keyframes mik-lightbox-photo-in {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .mik-lightbox,
+  .mik-lightbox-photo {
+    animation: none;
+    transition: none;
+  }
+
+  .mik-lightbox.is-open {
+    opacity: 1;
+  }
+
   .storefront-door {
     transition: none;
   }
