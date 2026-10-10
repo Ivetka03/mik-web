@@ -44,11 +44,11 @@ export function CollectionsIndex() {
                   <a
                     key={model.id}
                     href={`#kolekce/${collection.slug}/${model.slug}`}
-                    className="group relative aspect-[380/500] overflow-hidden border border-[#c3a06b] bg-black"
+                    className="group relative aspect-[9/16] overflow-hidden border border-[#c3a06b] bg-black"
                   >
                     <img
                       alt={model.name}
-                      className="absolute inset-0 h-full w-full object-cover object-[center_top] transition-transform duration-700 ease-out group-hover:scale-[1.07]"
+                      className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.07]"
                       src={model.coverImage}
                     />
                   </a>
@@ -160,12 +160,13 @@ export function ModelGallery({
   onClose: () => void;
 }) {
   const photos = getModelGallery(model);
-  const [index, setIndex] = useState(0);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const touchStartX = useRef<number | null>(null);
   const photosLength = photos.length;
+  const lightboxSrc = lightboxIndex != null ? photos[lightboxIndex] : null;
 
   useEffect(() => {
-    setIndex(0);
+    setLightboxIndex(null);
   }, [model.id]);
 
   useEffect(() => {
@@ -176,9 +177,12 @@ export function ModelGallery({
     };
   }, []);
 
-  function showPhoto(delta: number) {
+  function stepLightbox(delta: number) {
     if (photosLength === 0) return;
-    setIndex((current) => (current + delta + photosLength) % photosLength);
+    setLightboxIndex((current) => {
+      if (current == null) return current;
+      return (current + delta + photosLength) % photosLength;
+    });
   }
 
   function goToSibling(direction: -1 | 1) {
@@ -189,42 +193,29 @@ export function ModelGallery({
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
+        if (lightboxIndex != null) {
+          setLightboxIndex(null);
+          return;
+        }
         onClose();
         return;
       }
       if (event.key === "ArrowRight") {
-        if (event.shiftKey) goToSibling(1);
-        else showPhoto(1);
+        if (lightboxIndex != null) stepLightbox(1);
+        else goToSibling(1);
       }
       if (event.key === "ArrowLeft") {
-        if (event.shiftKey) goToSibling(-1);
-        else showPhoto(-1);
+        if (lightboxIndex != null) stepLightbox(-1);
+        else goToSibling(-1);
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [collection, model.slug, onClose, photosLength]);
+  }, [collection, lightboxIndex, model.slug, onClose, photosLength]);
 
   return (
-    <div
-      className="fixed inset-0 z-[80] bg-black flex flex-col"
-      role="dialog"
-      aria-modal="true"
-      aria-label={model.name}
-      onTouchStart={(event) => {
-        touchStartX.current = event.changedTouches[0]?.clientX ?? null;
-      }}
-      onTouchEnd={(event) => {
-        const start = touchStartX.current;
-        const end = event.changedTouches[0]?.clientX;
-        touchStartX.current = null;
-        if (start == null || end == null) return;
-        const delta = end - start;
-        if (delta > 56) showPhoto(-1);
-        if (delta < -56) showPhoto(1);
-      }}
-    >
-      <div className="flex items-center justify-between gap-4 px-5 sm:px-10 py-5 border-b border-[#c3a06b]/40">
+    <div className="fixed inset-0 z-[80] bg-black flex flex-col" role="dialog" aria-modal="true" aria-label={model.name}>
+      <div className="flex items-center justify-between gap-4 px-5 sm:px-10 py-5 border-b border-[#c3a06b]/40 shrink-0">
         <div className="min-w-0">
           <p className="font-['Manrope:Bold'] font-bold text-[#c3a06b] text-[11px] tracking-[2px] uppercase truncate">
             {collection.name}
@@ -242,55 +233,31 @@ export function ModelGallery({
         </button>
       </div>
 
-      <div className="relative flex-1 min-h-0 flex items-center justify-center px-4 sm:px-16 py-6">
-        {photos.length > 1 ? (
-          <button
-            type="button"
-            aria-label="Předchozí fotografie"
-            onClick={() => showPhoto(-1)}
-            className="absolute left-2 sm:left-6 z-10 h-11 w-11 border border-[#c3a06b] text-[#e6d4ae] hover:bg-[#c3a06b] hover:text-[#1b1412] transition-colors"
-          >
-            ‹
-          </button>
-        ) : null}
-        {photos[index] ? (
-          <img
-            alt={`${model.name} — fotografie ${index + 1} z ${photos.length}`}
-            src={photos[index]}
-            className="max-h-full max-w-full object-contain"
-          />
-        ) : null}
-        {photos.length > 1 ? (
-          <button
-            type="button"
-            aria-label="Další fotografie"
-            onClick={() => showPhoto(1)}
-            className="absolute right-2 sm:right-6 z-10 h-11 w-11 border border-[#c3a06b] text-[#e6d4ae] hover:bg-[#c3a06b] hover:text-[#1b1412] transition-colors"
-          >
-            ›
-          </button>
-        ) : null}
+      <div className="flex-1 min-h-0 overflow-y-auto">
+        <div className="px-3 sm:px-6 lg:px-10 py-6 lg:py-10">
+          <div className="mx-auto grid w-full max-w-[1440px] grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1 sm:gap-2">
+            {photos.map((src, photoIndex) => (
+              <button
+                key={`${src}-${photoIndex}`}
+                type="button"
+                className="group relative aspect-[9/16] overflow-hidden border border-[#c3a06b] bg-black cursor-pointer"
+                onClick={() => setLightboxIndex(photoIndex)}
+                aria-label={`Zvětšit fotografii ${photoIndex + 1} z ${photosLength}`}
+              >
+                {src ? (
+                  <img
+                    alt={`${model.name} — fotografie ${photoIndex + 1} z ${photosLength}`}
+                    className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.04]"
+                    src={src}
+                  />
+                ) : null}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {photos.length > 1 ? (
-        <div className="flex gap-2 overflow-x-auto px-5 sm:px-10 pb-3">
-          {photos.map((src, photoIndex) => (
-            <button
-              key={`${src}-${photoIndex}`}
-              type="button"
-              onClick={() => setIndex(photoIndex)}
-              aria-label={`Fotografie ${photoIndex + 1}`}
-              className={`relative h-16 w-12 sm:h-20 sm:w-14 shrink-0 overflow-hidden border ${
-                photoIndex === index ? "border-[#e6d4ae]" : "border-[#c3a06b]/50"
-              }`}
-            >
-              <img alt="" src={src} className="h-full w-full object-cover" />
-            </button>
-          ))}
-        </div>
-      ) : null}
-
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 sm:px-10 py-4 border-t border-[#c3a06b]/40">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 sm:px-10 py-4 border-t border-[#c3a06b]/40 shrink-0">
         <p className="font-['Manrope:Regular'] text-[#e6d4ae] text-[13px] sm:text-[14px] leading-relaxed opacity-80 max-w-[640px]">
           {model.description}
         </p>
@@ -314,6 +281,78 @@ export function ModelGallery({
           </button>
         </div>
       </div>
+
+      {lightboxSrc ? (
+        <div
+          className="fixed inset-0 z-[90] bg-black flex flex-col"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${model.name} — zvětšená fotografie`}
+          onClick={() => setLightboxIndex(null)}
+          onTouchStart={(event) => {
+            touchStartX.current = event.changedTouches[0]?.clientX ?? null;
+          }}
+          onTouchEnd={(event) => {
+            const start = touchStartX.current;
+            const end = event.changedTouches[0]?.clientX;
+            touchStartX.current = null;
+            if (start == null || end == null) return;
+            const delta = end - start;
+            if (delta > 56) stepLightbox(-1);
+            if (delta < -56) stepLightbox(1);
+          }}
+        >
+          <div
+            className="flex items-center justify-between gap-4 px-5 sm:px-10 py-5 border-b border-[#c3a06b]/40"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <p className="font-['Manrope:Regular'] text-[#e6d4ae] text-[13px] tracking-[1.5px] uppercase">
+              {(lightboxIndex ?? 0) + 1} / {photosLength}
+            </p>
+            <button
+              type="button"
+              onClick={() => setLightboxIndex(null)}
+              className="shrink-0 border border-[#c3a06b] px-4 sm:px-5 py-2.5 font-['Manrope:Bold'] font-bold text-[#e6d4ae] text-[11px] sm:text-[12px] tracking-[1.5px] uppercase hover:bg-[#c3a06b] hover:text-[#1b1412] transition-colors"
+            >
+              Zavřít
+            </button>
+          </div>
+          <div className="flex-1 min-h-0 flex items-center justify-center gap-2 sm:gap-4 px-3 sm:px-6 py-6">
+            {photosLength > 1 ? (
+              <button
+                type="button"
+                aria-label="Předchozí fotografie"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  stepLightbox(-1);
+                }}
+                className="shrink-0 flex h-8 w-8 items-center justify-center bg-[#c3a06b] text-[#1b1412] text-lg leading-none hover:bg-[#e6d4ae] transition-colors"
+              >
+                ‹
+              </button>
+            ) : null}
+            <img
+              alt={`${model.name} — fotografie ${(lightboxIndex ?? 0) + 1} z ${photosLength}`}
+              className="max-h-full max-w-full object-contain"
+              src={lightboxSrc}
+              onClick={(event) => event.stopPropagation()}
+            />
+            {photosLength > 1 ? (
+              <button
+                type="button"
+                aria-label="Další fotografie"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  stepLightbox(1);
+                }}
+                className="shrink-0 flex h-8 w-8 items-center justify-center bg-[#c3a06b] text-[#1b1412] text-lg leading-none hover:bg-[#e6d4ae] transition-colors"
+              >
+                ›
+              </button>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

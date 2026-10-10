@@ -94,6 +94,53 @@ function BrandStorySection({
   );
 }
 
+function HelpStoriesSection({
+  id,
+  minFullPage = false,
+}: {
+  id?: string;
+  minFullPage?: boolean;
+}) {
+  return (
+    <section
+      id={id}
+      className={`bg-black px-5 sm:px-10 lg:px-20 py-24 lg:py-[120px]${
+        minFullPage ? " min-h-[calc(100dvh-76px)] sm:min-h-[calc(100dvh-84px)]" : ""
+      }`}
+    >
+      <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row gap-16 lg:gap-20 items-center">
+        <div className="flex flex-col gap-10 flex-1">
+          <div className="flex flex-col gap-6">
+            <SectionLabel className="text-[#c3a06b]">
+              Příběhy s hlubším smyslem
+            </SectionLabel>
+            <h2 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.1] text-[#e6d4ae] text-4xl lg:text-5xl xl:text-[64px]">
+              Krása může měnit příběhy.
+            </h2>
+            <p className="font-['Manrope:Regular'] font-normal leading-[1.8] text-[#e6d4ae] text-[16px] opacity-80">
+              Protéza je přirozenou součástí mého života i mého příběhu. Nikdy jsem ji nechtěla schovávat a nechci, aby to museli dělat i jiní. Chci, aby móda MiK pomáhala psát příběhy s větší svobodou a radostí.
+            </p>
+            <p className="font-['Manrope:Regular'] font-normal leading-[1.8] text-[#e6d4ae] text-[16px] opacity-80">
+              Část výtěžku z prodeje každé kolekce putuje přímo na podporu konkrétního člověka, kterého osobně vybírám, a pomáhá mu financovat pořízení moderní bionické protézy. Každá kolekce tak dává vzniknout novému příběhu pomoci a návratu k nespoutanému životu.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-8 items-center">
+            <button className="bg-[#f50067] border border-[#f50067] px-6 sm:px-9 py-3 sm:py-4 font-['Manrope:Bold'] font-bold text-[#e6d4ae] text-[12px] sm:text-[14px] tracking-[1.5px] sm:tracking-[2px] uppercase text-center hover:bg-[#d4005a] transition-colors">
+              Poznat aktuální příběh
+            </button>
+            <button className="font-['Manrope:SemiBold'] font-semibold text-[#c3a06b] text-[14px] tracking-[1px] uppercase underline decoration-solid hover:text-[#e6d4ae] transition-colors">
+              Jak společně pomáháme
+            </button>
+          </div>
+        </div>
+        <div className="mx-auto w-full max-w-[380px] lg:mx-0 lg:w-[400px] lg:max-w-none shrink-0 aspect-[380/500] relative overflow-hidden border border-[#c3a06b] bg-black">
+          <img alt="MiK na tenisovém kurtu" className="absolute inset-0 w-full h-full object-cover object-center" src={imgRectangle8} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function StorefrontDoorMark({ side }: { side: "left" | "right" }) {
   const isLeft = side === "left";
 
@@ -357,7 +404,7 @@ export default function App() {
   const [doorsOpen, setDoorsOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [legalPage, setLegalPage] = useState<"gdpr" | "terms" | null>(null);
-  const [pageView, setPageView] = useState<"home" | "collections" | "contact" | "about">("home");
+  const [pageView, setPageView] = useState<"home" | "collections" | "contact" | "about" | "help">("home");
   const [collectionRoute, setCollectionRoute] = useState<{
     open: boolean;
     slug: string | null;
@@ -453,6 +500,11 @@ export default function App() {
         setCollectionRoute({ open: false, slug: null, modelSlug: null });
         return;
       }
+      if (hash === "#pomahame") {
+        setPageView("help");
+        setCollectionRoute({ open: false, slug: null, modelSlug: null });
+        return;
+      }
       if (hash === "#kontakt") {
         setPageView("contact");
         setCollectionRoute({ open: false, slug: null, modelSlug: null });
@@ -482,7 +534,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (pageView === "collections" || pageView === "contact" || pageView === "about") {
+    if (pageView === "collections" || pageView === "contact" || pageView === "about" || pageView === "help") {
       window.scrollTo(0, 0);
       return;
     }
@@ -502,7 +554,7 @@ export default function App() {
   }
 
   return (
-    <div className={`w-full min-h-dvh relative ${pageView === "collections" ? "bg-black" : "bg-[#e6d4ae]"}`}>
+    <div className={`w-full min-h-dvh relative ${pageView === "collections" || pageView === "help" ? "bg-black" : "bg-[#e6d4ae]"}`}>
 
       {/* HEADER */}
       <header className="mik-site-header border-b border-[#c3a06b] relative z-50 sticky top-0 isolate overflow-visible mix-blend-normal" style={goldSurface}>
@@ -682,11 +734,11 @@ export default function App() {
                 <a
                   key={model.id}
                   href={`#kolekce/${featuredCollection.slug}/${model.slug}`}
-                  className="group relative aspect-[380/500] overflow-hidden border border-[#c3a06b] bg-black"
+                  className="group relative aspect-[9/16] overflow-hidden border border-[#c3a06b] bg-black"
                 >
                   <img
                     alt={model.name}
-                    className="absolute inset-0 h-full w-full object-cover object-[center_top] transition-transform duration-700 ease-out group-hover:scale-[1.07]"
+                    className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.07]"
                     src={model.coverImage}
                   />
                 </a>
@@ -777,41 +829,12 @@ export default function App() {
       </section>
       )}
 
-      {/* HELP / STORIES SECTION */}
-      <section id="pomahame" className="bg-black px-5 sm:px-10 lg:px-20 py-24 lg:py-[120px]">
-        <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row gap-16 lg:gap-20 items-center">
-          <div className="flex flex-col gap-10 flex-1">
-            <div className="flex flex-col gap-6">
-              <SectionLabel className="text-[#c3a06b]">
-                Příběhy s hlubším smyslem
-              </SectionLabel>
-              <h2 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.1] text-[#e6d4ae] text-4xl lg:text-5xl xl:text-[64px]">
-                Krása může měnit příběhy.
-              </h2>
-              <p className="font-['Manrope:Regular'] font-normal leading-[1.8] text-[#e6d4ae] text-[16px] opacity-80">
-                Protéza je přirozenou součástí mého života i mého příběhu. Nikdy jsem ji nechtěla schovávat a nechci, aby to museli dělat i jiní. Chci, aby móda MiK pomáhala psát příběhy s větší svobodou a radostí.
-              </p>
-              <p className="font-['Manrope:Regular'] font-normal leading-[1.8] text-[#e6d4ae] text-[16px] opacity-80">
-                Část výtěžku z prodeje každé kolekce putuje přímo na podporu konkrétního člověka, kterého osobně vybírám, a pomáhá mu financovat pořízení moderní bionické protézy. Každá kolekce tak dává vzniknout novému příběhu pomoci a návratu k nespoutanému životu.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-8 items-center">
-              <button className="bg-[#f50067] border border-[#f50067] px-6 sm:px-9 py-3 sm:py-4 font-['Manrope:Bold'] font-bold text-[#e6d4ae] text-[12px] sm:text-[14px] tracking-[1.5px] sm:tracking-[2px] uppercase text-center hover:bg-[#d4005a] transition-colors">
-                Poznat aktuální příběh
-              </button>
-              <button className="font-['Manrope:SemiBold'] font-semibold text-[#c3a06b] text-[14px] tracking-[1px] uppercase underline decoration-solid hover:text-[#e6d4ae] transition-colors">
-                Jak společně pomáháme
-              </button>
-            </div>
-          </div>
-          <div className="mx-auto w-full max-w-[380px] lg:mx-0 lg:w-[400px] lg:max-w-none shrink-0 aspect-[380/500] relative overflow-hidden border border-[#c3a06b] bg-black">
-            <img alt="MiK na tenisovém kurtu" className="absolute inset-0 w-full h-full object-cover object-center" src={imgRectangle8} />
-          </div>
-        </div>
-      </section>
+      <HelpStoriesSection />
       </div>
 
       {pageView === "about" ? <BrandStorySection id="pribehy" minFullPage /> : null}
+
+      {pageView === "help" ? <HelpStoriesSection id="pomahame" minFullPage /> : null}
 
       {pageView === "contact" ? (
       <section id="kontakt" className="relative overflow-hidden px-5 sm:px-10 lg:px-20 py-24 lg:py-[140px] min-h-[calc(100dvh-76px)] sm:min-h-[calc(100dvh-84px)]" style={goldSurface}>

@@ -58,12 +58,12 @@ export const collections: Collection[] = [
         slug: "kvetinovy-komplet",
         name: "Květinový komplet",
         description: "Barvy tropů a volný pohyb. Model, ve kterém je léto cítit na kůži.",
-        coverImage: `${assets}/kolekce-barevne-more-aligned.jpg`,
+        coverImage: `${assets}/Ruzovy_overal_1.jpg`,
         images: [
-          `${assets}/kolekce-barevne-more-aligned.jpg`,
-          `${assets}/kolekce-kvetinovy-komplet-2.jpg`,
-          `${assets}/kolekce-kvetinovy-komplet-3.jpg`,
-          `${assets}/kolekce-kvetinovy-komplet-4.jpg`,
+          `${assets}/Ruzovy_overal_1.jpg`,
+          `${assets}/Ruzovy_overal_2b.png`,
+          `${assets}/Ruzovy_overal_3b.png`,
+          `${assets}/Ruzovy_overal_4.jpg`,
         ],
       },
       {
@@ -72,7 +72,11 @@ export const collections: Collection[] = [
         name: "Žlutý overal",
         description: "Slunce v jednom kusu. Odvaha, která se usmívá.",
         coverImage: `${assets}/kolekce-zluty-overal-aligned.jpg`,
-        images: [`${assets}/kolekce-zluty-overal-aligned.jpg`],
+        images: [
+          `${assets}/kolekce-zluty-overal-aligned.jpg`,
+          `${assets}/kolekce-zluty-overal-2.jpg`,
+          `${assets}/kolekce-zluty-overal-3.jpg`,
+        ],
       },
     ],
   },
@@ -129,11 +133,8 @@ export function getModelBySlug(collection: Collection, slug: string): FashionMod
 }
 
 export function getModelGallery(model: FashionModel): string[] {
-  const photos = model.images.length > 0 ? model.images : [model.coverImage];
-  if (photos[0] !== model.coverImage && model.coverImage) {
-    return [model.coverImage, ...photos.filter((src) => src !== model.coverImage)];
-  }
-  return photos;
+  if (model.images.length > 0) return model.images;
+  return model.coverImage ? [model.coverImage] : [];
 }
 
 export function getSiblingModel(
