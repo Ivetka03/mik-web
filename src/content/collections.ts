@@ -50,7 +50,7 @@ export const collections: Collection[] = [
         images: [
           `${assets}/kolekce-bile-more-aligned.jpg`,
           `${assets}/kolekce-bila-krajka-2.jpg`,
-          `${assets}/kolekce-bila-krajka-3.jpg`,
+          `${assets}/Krajkove_saty_3.png`,
         ],
       },
       {
