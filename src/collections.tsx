@@ -235,12 +235,12 @@ export function ModelGallery({
 
       <div className="flex-1 min-h-0 overflow-y-auto">
         <div className="px-3 sm:px-6 lg:px-10 py-6 lg:py-10">
-          <div className="mx-auto grid w-full max-w-[1440px] grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1 sm:gap-2">
+          <div className="mx-auto flex w-full max-w-[1440px] flex-wrap justify-center gap-1 sm:gap-2">
             {photos.map((src, photoIndex) => (
               <button
                 key={`${src}-${photoIndex}`}
                 type="button"
-                className="group relative aspect-[9/16] overflow-hidden border border-[#c3a06b] bg-black cursor-pointer"
+                className="group relative aspect-[9/16] w-[calc((100%-0.25rem)/2)] sm:w-[calc((100%-1rem)/3)] lg:w-[calc((100%-1.5rem)/4)] shrink-0 overflow-hidden border border-[#c3a06b] bg-black cursor-pointer"
                 onClick={() => setLightboxIndex(photoIndex)}
                 aria-label={`Zvětšit fotografii ${photoIndex + 1} z ${photosLength}`}
               >
