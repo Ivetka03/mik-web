@@ -75,7 +75,7 @@ export const collections: Collection[] = [
         images: [
           `${assets}/Zluty_overal_1.jpg`,
           `${assets}/Zluty_overal_2.png`,
-          `${assets}/Zluty_overal_3.png`,
+          `${assets}/Zluty_overal_3b.png`,
         ],
       },
     ],

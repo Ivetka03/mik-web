@@ -358,9 +358,11 @@ export function ModelGallery({
                 event.stopPropagation();
                 stepLightbox(-1);
               }}
-              className="absolute left-3 sm:left-5 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center bg-[#c3a06b] text-[#1b1412] text-2xl leading-none hover:bg-[#e6d4ae] transition-colors"
+              className="absolute left-2 sm:left-4 top-1/2 z-10 -translate-y-1/2 flex h-14 w-12 items-center justify-center text-[#c3a06b] hover:text-[#e6d4ae] transition-colors"
             >
-              ‹
+              <svg viewBox="0 0 24 48" className="h-10 w-5" fill="none" aria-hidden="true">
+                <path d="M18 4 L6 24 L18 44" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </button>
           ) : null}
           <img
@@ -378,9 +380,11 @@ export function ModelGallery({
                 event.stopPropagation();
                 stepLightbox(1);
               }}
-              className="absolute right-3 sm:right-5 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center bg-[#c3a06b] text-[#1b1412] text-2xl leading-none hover:bg-[#e6d4ae] transition-colors"
+              className="absolute right-2 sm:right-4 top-1/2 z-10 -translate-y-1/2 flex h-14 w-12 items-center justify-center text-[#c3a06b] hover:text-[#e6d4ae] transition-colors"
             >
-              ›
+              <svg viewBox="0 0 24 48" className="h-10 w-5" fill="none" aria-hidden="true">
+                <path d="M6 4 L18 24 L6 44" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </button>
           ) : null}
         </div>
