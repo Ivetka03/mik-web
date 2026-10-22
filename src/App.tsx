@@ -3,7 +3,9 @@ import { createPortal } from "react-dom";
 import { LegalPage, privacyPolicy, termsOfService } from "./legal";
 import mikLogoMask from "./assets/mik-logo-mask.png";
 import { CollectionsIndex, ModelGallery } from "./collections";
-import { getCollectionBySlug, getModelBySlug, getPublishedCollections } from "./content/collections";
+import { getCollectionBySlug, getModelBySlug } from "./content/collections";
+import { publishedCollections } from "./content/site";
+import { useSiteContent } from "./content/SiteContent";
 
 const assetPathPrefix = "/assets";
 const imgHeaderLogo = `${assetPathPrefix}/727b1.png`;
@@ -54,6 +56,8 @@ function BrandStorySection({
   id?: string;
   minFullPage?: boolean;
 }) {
+  const { content } = useSiteContent();
+  const about = content.about;
   return (
     <section
       id={id}
@@ -69,23 +73,20 @@ function BrandStorySection({
         <div className="flex flex-col gap-10 flex-1">
           <div className="flex flex-col gap-4">
             <SectionLabel className="text-[#f50067]">
-              Příběh za značkou MiK
+              {about.label}
             </SectionLabel>
             <h1 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.1] text-[#7a4e38] text-4xl lg:text-5xl xl:text-[56px]">
-              Nenašla jsem módu, kterou bych chtěla nosit. Tak jsem si ji začala navrhovat sama.
+              {about.title}
             </h1>
           </div>
           <div className="flex flex-col gap-5 font-['Manrope:Regular'] font-normal leading-[1.7] text-[#7a4e38] text-[16px] opacity-90">
-            <p>
-              Chyběly mi barvy, ženskost a modely, které mají energii, nespoutanost a radost ze života. Nechtěla jsem oblečení, ve kterém se budu schovávat, krotit nebo zapadat. A tak vznikla MiK.
-            </p>
-            <p>
-              Tvořím pro ženy, které milují život, sebe a chtějí se ve svých šatech cítit svobodně, žensky a trochu nebezpečně. Nechci tvořit další „správné" oblečení. Chci tvořit modely, které si obléknete a něco se stane. Narovnáte se. Usmějete se. Možná budete trochu víc flirtovat.
-            </p>
+            {about.paragraphs.map((paragraph) => (
+              <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+            ))}
           </div>
           <div className="border-l-[3px] border-[#f50067] pl-6">
             <p className="font-['Cormorant_Garamond:Italic'] font-normal italic leading-[1.3] text-[#f50067] text-2xl lg:text-[32px]">
-              „Buď barevná. Buď odvážná. Buď ženská. A hlavně buď svoje."
+              {about.quote}
             </p>
           </div>
         </div>
@@ -101,6 +102,8 @@ function HelpStoriesSection({
   id?: string;
   minFullPage?: boolean;
 }) {
+  const { content } = useSiteContent();
+  const help = content.help;
   return (
     <section
       id={id}
@@ -112,29 +115,28 @@ function HelpStoriesSection({
         <div className="flex flex-col gap-10 flex-1">
           <div className="flex flex-col gap-6">
             <SectionLabel className="text-[#c3a06b]">
-              Příběhy s hlubším smyslem
+              {help.label}
             </SectionLabel>
             <h2 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.1] text-[#e6d4ae] text-4xl lg:text-5xl xl:text-[64px]">
-              Krása může měnit příběhy.
+              {help.title}
             </h2>
-            <p className="font-['Manrope:Regular'] font-normal leading-[1.8] text-[#e6d4ae] text-[16px] opacity-80">
-              Protéza je přirozenou součástí mého života i mého příběhu. Nikdy jsem ji nechtěla schovávat a nechci, aby to museli dělat i jiní. Chci, aby móda MiK pomáhala psát příběhy s větší svobodou a radostí.
-            </p>
-            <p className="font-['Manrope:Regular'] font-normal leading-[1.8] text-[#e6d4ae] text-[16px] opacity-80">
-              Část výtěžku z prodeje každé kolekce putuje přímo na podporu konkrétního člověka, kterého osobně vybírám, a pomáhá mu financovat pořízení moderní bionické protézy. Každá kolekce tak dává vzniknout novému příběhu pomoci a návratu k nespoutanému životu.
-            </p>
+            {help.paragraphs.map((paragraph) => (
+              <p key={paragraph.slice(0, 24)} className="font-['Manrope:Regular'] font-normal leading-[1.8] text-[#e6d4ae] text-[16px] opacity-80">
+                {paragraph}
+              </p>
+            ))}
           </div>
           <div className="flex flex-wrap gap-8 items-center">
             <button className="bg-[#f50067] border border-[#f50067] px-6 sm:px-9 py-3 sm:py-4 font-['Manrope:Bold'] font-bold text-[#e6d4ae] text-[12px] sm:text-[14px] tracking-[1.5px] sm:tracking-[2px] uppercase text-center hover:bg-[#d4005a] transition-colors">
-              Poznat aktuální příběh
+              {help.ctaPrimary}
             </button>
             <button className="font-['Manrope:SemiBold'] font-semibold text-[#c3a06b] text-[14px] tracking-[1px] uppercase underline decoration-solid hover:text-[#e6d4ae] transition-colors">
-              Jak společně pomáháme
+              {help.ctaSecondary}
             </button>
           </div>
         </div>
         <div className="mx-auto w-full max-w-[380px] lg:mx-0 lg:w-[400px] lg:max-w-none shrink-0 aspect-[380/500] relative overflow-hidden border border-[#c3a06b] bg-black">
-          <img alt="MiK na tenisovém kurtu" className="absolute inset-0 w-full h-full object-cover object-center" src={imgRectangle8} />
+          <img alt={help.photoAlt} className="absolute inset-0 w-full h-full object-cover object-center" src={imgRectangle8} />
         </div>
       </div>
     </section>
@@ -143,6 +145,7 @@ function HelpStoriesSection({
 
 function StorefrontDoorMark({ side }: { side: "left" | "right" }) {
   const isLeft = side === "left";
+  const { content } = useSiteContent();
 
   return (
     <>
@@ -164,7 +167,7 @@ function StorefrontDoorMark({ side }: { side: "left" | "right" }) {
           <img alt="" className="absolute inset-0 h-full w-full" src={imgLineAccentTop} />
         </div>
         <p className="font-['Cormorant_Garamond:SemiBold'] sm:font-['Cormorant_Garamond:Light'] font-semibold sm:font-light uppercase text-[#7a4e38] sm:text-[#e6d4ae] text-[15px] sm:text-sm lg:text-lg xl:text-[22px] tracking-[0.16em] sm:tracking-[0.3em] lg:tracking-[0.38em] [text-shadow:0_1px_0_rgba(255,250,240,0.85),0_2px_6px_rgba(122,78,56,0.28)] sm:[text-shadow:0_2px_8px_rgba(0,0,0,0.5)] whitespace-nowrap">
-          {isLeft ? "Vítej v" : "mém světě"}
+          {isLeft ? content.hero.welcomeLeft : content.hero.welcomeRight}
         </p>
         <div className="relative h-1.5 w-16 sm:w-24 lg:w-32">
           <img alt="" className="absolute inset-0 h-full w-full" src={imgLineAccentBottom} />
@@ -412,14 +415,15 @@ export default function App() {
   }>({ open: false, slug: null, modelSlug: null });
   const curtainsReady = useImageReady(imgStorefrontCurtains);
   const introReady = useImageReady(imgSectionIntroSplash);
-  const featuredCollection = getPublishedCollections()[0];
+  const { content, collections } = useSiteContent();
+  const featuredCollection = publishedCollections(content)[0];
 
   async function handleContactSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (formStatus === "sending") return;
     setFormStatus("sending");
     try {
-      const response = await fetch("https://formsubmit.co/ajax/mik@mikolection.com", {
+      const response = await fetch(`https://formsubmit.co/ajax/${content.contact.email}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -577,7 +581,7 @@ export default function App() {
               ))}
             </nav>
             <a href="#kolekce" className="hidden md:inline-flex bg-[#f50067] border border-[#f50067] px-4 sm:px-7 lg:px-8 py-2 sm:py-2.5 font-['Manrope:Bold'] font-bold text-[#e6d4ae] text-[11px] sm:text-[13px] lg:text-[14px] tracking-[1px] sm:tracking-[2px] uppercase text-center hover:bg-[#d4005a] transition-colors">
-              OBJEVIT KOLEKCI
+              {content.nav.cta}
             </a>
             <button
               type="button"
@@ -614,7 +618,7 @@ export default function App() {
               className="mt-1 mb-2 bg-[#f50067] border border-[#f50067] px-4 py-2.5 font-['Manrope:Bold'] font-bold text-[#e6d4ae] text-[12px] tracking-[1.5px] uppercase text-center hover:bg-[#d4005a] transition-colors"
               onClick={() => setMenuOpen(false)}
             >
-              OBJEVIT KOLEKCI
+              {content.nav.cta}
             </a>
           </nav>
         )}
@@ -711,7 +715,7 @@ export default function App() {
             <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6">
               <div className="flex flex-col gap-4 max-w-[700px]">
                 <SectionLabel className="text-[#f50067]">
-                  Aktuální kolekce
+                  {content.featured.label}
                 </SectionLabel>
                 <h2 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.15] text-[#e6d4ae] text-[32px] sm:text-5xl lg:text-[64px]">
                   {featuredCollection.name}
@@ -726,7 +730,7 @@ export default function App() {
                 href="#kolekce"
                 className="border border-[#c3a06b] px-6 sm:px-9 py-3 sm:py-4 font-['Manrope:Bold'] font-bold text-[#e6d4ae] text-[12px] sm:text-[14px] tracking-[1.5px] sm:tracking-[2px] uppercase text-center w-full sm:w-auto shrink-0 hover:bg-[#c3a06b] hover:text-[#1b1412] transition-colors"
               >
-                Všechny kolekce
+                {content.featured.allCollections}
               </a>
             </div>
             <div className="mx-auto grid w-full max-w-[1040px] grid-cols-3 gap-2 sm:gap-6 md:gap-8">
@@ -843,20 +847,20 @@ export default function App() {
           <div className="flex flex-col gap-8 lg:w-[500px] shrink-0">
             <div className="flex flex-col gap-4">
               <SectionLabel className="text-[#f50067]">
-                Napište mi
+                {content.contact.label}
               </SectionLabel>
               <h2 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.1] text-[#7a4e38] text-4xl lg:text-[56px]">
-                Zaujal Vás některý model?
+                {content.contact.title}
               </h2>
             </div>
             <p className="font-['Manrope:Regular'] font-normal leading-[1.7] text-[#7a4e38] text-[16px] opacity-80">
-              Ráda Vám řeknu víc o dostupnosti látek, konkrétních velikostech, ceně na dotaz nebo o možnostech individuální úpravy na míru Vaší osobnosti. Každý kus tvořím s láskou a osobní péčí.
+              {content.contact.intro}
             </p>
             <div className="flex flex-col gap-3 font-normal text-[#7a4e38] text-[14px]">
-              <p className="font-['Manrope:Bold'] font-bold">Michaela Kukletová</p>
+              <p className="font-['Manrope:Bold'] font-bold">{content.contact.person}</p>
               <div className="flex flex-col gap-1 font-['Manrope:Regular'] opacity-70">
-                <a href="mailto:mik@mikolection.com" className="hover:opacity-100">mik@mikolection.com</a>
-                <a href="tel:+420776090728" className="hover:opacity-100">+420 776 090 728</a>
+                <a href={`mailto:${content.contact.email}`} className="hover:opacity-100">{content.contact.email}</a>
+                <a href={`tel:${content.contact.phone.replace(/\s/g, "")}`} className="hover:opacity-100">{content.contact.phone}</a>
               </div>
             </div>
           </div>
@@ -939,17 +943,17 @@ export default function App() {
             </button>
             {formStatus === "sent" && (
               <p className="font-['Manrope:Regular'] text-[#7a4e38] text-[14px] text-center">
-                Děkuji, zpráva byla odeslána na mik@mikolection.com.
+                Děkuji, zpráva byla odeslána na {content.contact.email}.
               </p>
             )}
             {formStatus === "activate" && (
               <p className="font-['Manrope:Regular'] text-[#7a4e38] text-[14px] text-center">
-                Na mik@mikolection.com právě přišel aktivační e-mail. Po kliknutí na odkaz v něm budou další zprávy z formuláře chodit automaticky.
+                Na {content.contact.email} právě přišel aktivační e-mail. Po kliknutí na odkaz v něm budou další zprávy z formuláře chodit automaticky.
               </p>
             )}
             {formStatus === "error" && (
               <p className="font-['Manrope:Regular'] text-[#f50067] text-[14px] text-center">
-                Odeslání se nepovedlo. Zkuste to prosím znovu, nebo napište přímo na mik@mikolection.com.
+                Odeslání se nepovedlo. Zkuste to prosím znovu, nebo napište přímo na {content.contact.email}.
               </p>
             )}
           </form>
@@ -967,7 +971,7 @@ export default function App() {
                 <img alt="MiK" className="absolute inset-0 w-full h-full object-cover" src={imgHeaderLogo} />
               </div>
               <p className="font-['Manrope:Regular'] font-normal text-[#e6d4ae] text-[13px] leading-normal opacity-60">
-                Autorská módní značka designérky MiK. Tvořeno s vášní, barvami a nespoutanou radostí ze života.
+                {content.footer.tagline}
               </p>
             </div>
             {/* Nav columns */}
@@ -979,15 +983,15 @@ export default function App() {
                 <a href="#kontakt" className="font-['Manrope:Regular'] font-normal text-[#e6d4ae] text-[14px] opacity-80 hover:opacity-100 transition-opacity">Kontakt</a>
               </div>
             <div className="flex flex-col gap-4 max-w-[360px]">
-              <p className="font-['Manrope:Bold'] font-bold text-[#c3a06b] text-[12px] tracking-[2px] uppercase">Provozovatel</p>
+              <p className="font-['Manrope:Bold'] font-bold text-[#c3a06b] text-[12px] tracking-[2px] uppercase">{content.footer.operatorTitle}</p>
               <p className="font-['Manrope:Regular'] font-normal text-[#e6d4ae] text-[14px] opacity-80 leading-relaxed">
-                Michaela Kukletová<br />
-                Autorská módní značka MiK<br />
-                <a href="mailto:mik@mikolection.com" className="hover:opacity-100">mik@mikolection.com</a><br />
-                <a href="tel:+420776090728" className="hover:opacity-100">+420 776 090 728</a>
+                {content.footer.operatorName}<br />
+                {content.footer.operatorBrand}<br />
+                <a href={`mailto:${content.contact.email}`} className="hover:opacity-100">{content.contact.email}</a><br />
+                <a href={`tel:${content.contact.phone.replace(/\s/g, "")}`} className="hover:opacity-100">{content.contact.phone}</a>
               </p>
               <p className="font-['Manrope:Regular'] font-normal text-[#e6d4ae] text-[13px] opacity-50 leading-relaxed">
-                Web slouží k prezentaci tvorby a poptávkám. Smlouva vzniká až potvrzením objednávky. IČO a sídlo budou uvedeny na daňovém dokladu.
+                {content.footer.legalNote}
               </p>
             </div>
           </div>
@@ -999,7 +1003,7 @@ export default function App() {
 
           {/* Copyright */}
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 font-['Manrope:Regular'] font-normal text-[#e6d4ae] text-[13px]">
-            <p className="opacity-40">Copyright © 2026 MiK Fashion. Všechna práva vyhrazena.</p>
+            <p className="opacity-40">{content.footer.copyright}</p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-6">
               <a href="#gdpr" className="opacity-40 hover:opacity-70 transition-opacity">Ochrana osobních údajů</a>
               <a href="#obchodni-podminky" className="opacity-40 hover:opacity-70 transition-opacity">Obchodní podmínky</a>
@@ -1012,7 +1016,7 @@ export default function App() {
       {legalPage === "terms" && <LegalPage doc={termsOfService} onClose={closeLegal} />}
       {(() => {
         if (!collectionRoute.open || !collectionRoute.slug || !collectionRoute.modelSlug) return null;
-        const collection = getCollectionBySlug(collectionRoute.slug);
+        const collection = getCollectionBySlug(collectionRoute.slug, collections);
         if (!collection?.published) return null;
         const model = getModelBySlug(collection, collectionRoute.modelSlug);
         if (!model) return null;

@@ -6,6 +6,7 @@ import {
   type Collection,
   type FashionModel,
 } from "./content/collections";
+import { useSiteContent } from "./content/SiteContent";
 
 function setCollectionHash(collectionSlug: string, modelSlug?: string) {
   const hash = modelSlug ? `#kolekce/${collectionSlug}/${modelSlug}` : `#kolekce/${collectionSlug}`;
@@ -15,7 +16,8 @@ function setCollectionHash(collectionSlug: string, modelSlug?: string) {
 }
 
 export function CollectionsIndex() {
-  const collections = getPublishedCollections();
+  const { content, collections: allCollections } = useSiteContent();
+  const collections = getPublishedCollections(allCollections);
 
   return (
     <main className="min-h-[calc(100dvh-76px)] sm:min-h-[calc(100dvh-84px)] bg-black">
@@ -27,7 +29,7 @@ export function CollectionsIndex() {
                 <div className="flex items-center gap-3 text-[#f50067]">
                   <span aria-hidden className="h-px w-8 shrink-0 bg-current" />
                   <p className="font-['Manrope:Bold'] font-bold text-[12px] sm:text-[13px] tracking-[1.5px] sm:tracking-[2px] uppercase">
-                    {collectionIndex === 0 ? "Aktuální kolekce" : "Kolekce"}
+                    {collectionIndex === 0 ? content.featured.label : "Kolekce"}
                   </p>
                 </div>
                 <h1 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.15] text-[#e6d4ae] text-[32px] sm:text-5xl lg:text-[64px] break-words">

@@ -2,7 +2,9 @@ import { defineConfig, type HtmlTagDescriptor, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'node:path'
+import type { IncomingMessage, ServerResponse } from 'node:http'
 
+import { handleAdminRequest } from './server/api.mjs'
 import siteConfiguration from './.figma/make/site.json' with { type: 'json' }
 
 // Vite config — https://vitejs.dev/config/
@@ -19,6 +21,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       tailwindcss(),
+      mikAdminApi(),
       figmaSiteConfiguration(siteConfiguration),
       figmaErrorOverlayReplay(),
       figmaReactRefreshBoundaryFallback(),
@@ -71,6 +74,35 @@ type FigmaSiteConfiguration = {
   }
   accessibility?: {
     addBypassLinks?: boolean
+  }
+}
+
+function mikAdminApi(): Plugin {
+  function mount(middlewares: { use: (fn: (req: IncomingMessage, res: ServerResponse, next: () => void) => void) => void }) {
+    middlewares.use((req, res, next) => {
+      const url = (req.url || "").split("?")[0]
+      if (url !== "/health" && !url.startsWith("/api/")) {
+        next()
+        return
+      }
+      void handleAdminRequest(req, res).catch((error: unknown) => {
+        console.error(error)
+        if (!res.headersSent) {
+          res.statusCode = 500
+          res.end("error")
+        }
+      })
+    })
+  }
+
+  return {
+    name: "mik-admin-api",
+    configureServer(server) {
+      mount(server.middlewares)
+    },
+    configurePreviewServer(server) {
+      mount(server.middlewares)
+    },
   }
 }
 

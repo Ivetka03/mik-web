@@ -1,0 +1,132 @@
+{
+  "hero": {
+    "welcomeLeft": "Vítej v",
+    "welcomeRight": "mém světě"
+  },
+  "nav": {
+    "cta": "OBJEVIT KOLEKCI"
+  },
+  "featured": {
+    "label": "Aktuální kolekce",
+    "allCollections": "Všechny kolekce"
+  },
+  "about": {
+    "label": "Příběh za značkou MiK",
+    "title": "Nenašla jsem módu, kterou bych chtěla nosit. Tak jsem si ji začala navrhovat sama.",
+    "paragraphs": [
+      "Chyběly mi barvy, ženskost a modely, které mají energii, nespoutanost a radost ze života. Nechtěla jsem oblečení, ve kterém se budu schovávat, krotit nebo zapadat. A tak vznikla MiK.",
+      "Tvořím pro ženy, které milují život, sebe a chtějí se ve svých šatech cítit svobodně, žensky a trochu nebezpečně. Nechci tvořit další „správné\" oblečení. Chci tvořit modely, které si obléknete a něco se stane. Narovnáte se. Usmějete se. Možná budete trochu víc flirtovat."
+    ],
+    "quote": "„Buď barevná. Buď odvážná. Buď ženská. A hlavně buď svoje.\""
+  },
+  "help": {
+    "label": "Příběhy s hlubším smyslem",
+    "title": "Krása může měnit příběhy.",
+    "paragraphs": [
+      "Protéza je přirozenou součástí mého života i mého příběhu. Nikdy jsem ji nechtěla schovávat a nechci, aby to museli dělat i jiní. Chci, aby móda MiK pomáhala psát příběhy s větší svobodou a radostí.",
+      "Část výtěžku z prodeje každé kolekce putuje přímo na podporu konkrétního člověka, kterého osobně vybírám, a pomáhá mu financovat pořízení moderní bionické protézy. Každá kolekce tak dává vzniknout novému příběhu pomoci a návratu k nespoutanému životu."
+    ],
+    "ctaPrimary": "Poznat aktuální příběh",
+    "ctaSecondary": "Jak společně pomáháme",
+    "photoAlt": "MiK na tenisovém kurtu"
+  },
+  "contact": {
+    "label": "Napište mi",
+    "title": "Zaujal Vás některý model?",
+    "intro": "Ráda Vám řeknu víc o dostupnosti látek, konkrétních velikostech, ceně na dotaz nebo o možnostech individuální úpravy na míru Vaší osobnosti. Každý kus tvořím s láskou a osobní péčí.",
+    "person": "Michaela Kukletová",
+    "email": "mik@mikolection.com",
+    "phone": "+420 776 090 728"
+  },
+  "footer": {
+    "tagline": "Autorská módní značka designérky MiK. Tvořeno s vášní, barvami a nespoutanou radostí ze života.",
+    "operatorTitle": "Provozovatel",
+    "operatorName": "Michaela Kukletová",
+    "operatorBrand": "Autorská módní značka MiK",
+    "legalNote": "Web slouží k prezentaci tvorby a poptávkám. Smlouva vzniká až potvrzením objednávky. IČO a sídlo budou uvedeny na daňovém dokladu.",
+    "copyright": "Copyright © 2026 MiK Fashion. Všechna práva vyhrazena."
+  },
+  "collections": [
+    {
+      "id": "odhalme-se-do-krasy",
+      "slug": "odhalme-se-do-krasy",
+      "name": "Odhalme se do krásy",
+      "intro": "Do slunce. Do barev. Do rozkvetlé přírody. Léto si žádá lehkost, ženskost a trochu odvahy.",
+      "coverImage": "/assets/kolekce-bile-more-aligned.jpg",
+      "published": true,
+      "models": [
+        {
+          "id": "bila-krajka",
+          "slug": "bila-krajka",
+          "name": "Broderie",
+          "description": "Lehká krajka u moře. Ženskost, která se nebojí slunce.",
+          "coverImage": "/assets/kolekce-bile-more-aligned.jpg",
+          "images": [
+            "/assets/kolekce-bile-more-aligned.jpg",
+            "/assets/kolekce-bila-krajka-2.jpg",
+            "/assets/Krajkove_saty_3.png"
+          ]
+        },
+        {
+          "id": "kvetinovy-komplet",
+          "slug": "kvetinovy-komplet",
+          "name": "Schia",
+          "description": "Barvy tropů a volný pohyb. Model, ve kterém je léto cítit na kůži.",
+          "coverImage": "/assets/Ruzovy_overal_1.jpg",
+          "images": [
+            "/assets/Ruzovy_overal_1.jpg",
+            "/assets/Ruzovy_overal_2b.png",
+            "/assets/Ruzovy_overal_3b.png",
+            "/assets/Ruzovy_overal_4.jpg"
+          ]
+        },
+        {
+          "id": "zluty-overal",
+          "slug": "zluty-overal",
+          "name": "Chintz",
+          "description": "Slunce v jednom kusu. Odvaha, která se usmívá.",
+          "coverImage": "/assets/Zluty_overal_1.jpg",
+          "images": [
+            "/assets/Zluty_overal_1.jpg",
+            "/assets/Zluty_overal_2.png",
+            "/assets/Zluty_overal_3b.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nespoutana-duse",
+      "slug": "nespoutana-duse",
+      "name": "Nespoutaná duše",
+      "intro": "Podzim / Zima 2023. Fotografie této kolekce připravujeme.",
+      "coverImage": "",
+      "published": false,
+      "models": [
+        {
+          "id": "nespoutana-duse-1",
+          "slug": "model-1",
+          "name": "Model I",
+          "description": "",
+          "coverImage": "",
+          "images": []
+        },
+        {
+          "id": "nespoutana-duse-2",
+          "slug": "model-2",
+          "name": "Model II",
+          "description": "",
+          "coverImage": "",
+          "images": []
+        },
+        {
+          "id": "nespoutana-duse-3",
+          "slug": "model-3",
+          "name": "Model III",
+          "description": "",
+          "coverImage": "",
+          "images": []
+        }
+      ]
+    }
+  ]
+}
