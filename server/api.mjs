@@ -86,16 +86,21 @@ async function loadAuth() {
     return auth;
   }
   const auth = readJson(AUTH_PATH, null);
-  if (!auth?.secret || !auth?.passwordHash || !auth?.email) {
-    const next = {
-      email: auth?.email || ADMIN_EMAIL,
-      passwordHash: auth?.passwordHash || (await hashPassword(INITIAL_PASSWORD)),
-      secret: auth?.secret || randomBytes(32).toString("hex"),
-    };
+  const next = {
+    email: auth?.email || ADMIN_EMAIL,
+    passwordHash: auth?.passwordHash || (await hashPassword(INITIAL_PASSWORD)),
+    secret: auth?.secret || randomBytes(32).toString("hex"),
+  };
+  const resetPassword = String(process.env.ADMIN_RESET_PASSWORD || "").trim();
+  if (resetPassword) {
+    next.passwordHash = await hashPassword(resetPassword);
     writeJson(AUTH_PATH, next);
     return next;
   }
-  return auth;
+  if (!auth?.secret || !auth?.passwordHash || !auth?.email) {
+    writeJson(AUTH_PATH, next);
+  }
+  return next;
 }
 
 function sign(secret, payload) {
@@ -308,9 +313,9 @@ export async function handleAdminRequest(req, res) {
     if (email === auth.email) {
       try {
         const password = generatePassword();
+        await emailNewPassword(auth.email, password);
         auth.passwordHash = await hashPassword(password);
         writeJson(AUTH_PATH, auth);
-        await emailNewPassword(auth.email, password);
       } catch (error) {
         if (error.code === "activation") {
           send(res, 200, {
