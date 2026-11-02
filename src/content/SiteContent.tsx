@@ -24,7 +24,16 @@ export function SiteContentProvider({ children }: { children: ReactNode }) {
       .then((response) => (response.ok ? response.json() : null))
       .then((payload) => {
         if (cancelled || !payload) return;
-        setContent({ ...siteContentDefaults, ...payload, collections: payload.collections || siteContentDefaults.collections });
+        const next = {
+          ...siteContentDefaults,
+          ...payload,
+          featured: { ...siteContentDefaults.featured, ...(payload.featured || {}) },
+          collections:
+            Array.isArray(payload.collections) && payload.collections.some((item: { id?: string }) => item?.id === "vstupme-do-zare")
+              ? payload.collections
+              : siteContentDefaults.collections,
+        };
+        setContent(next);
       })
       .catch(() => {})
       .finally(() => {

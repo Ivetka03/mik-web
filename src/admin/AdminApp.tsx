@@ -268,8 +268,11 @@ export default function AdminApp() {
               <h2 className="font-['Cormorant_Garamond:Regular'] text-[#7a4e38] text-3xl">Úvod</h2>
               <Field label="Levé dveře" value={content.hero.welcomeLeft} onChange={(welcomeLeft) => setContent({ ...content, hero: { ...content.hero, welcomeLeft } })} />
               <Field label="Pravé dveře" value={content.hero.welcomeRight} onChange={(welcomeRight) => setContent({ ...content, hero: { ...content.hero, welcomeRight } })} />
+              <Field label="Motto — první věta" value={content.hero.mottoLead} onChange={(mottoLead) => setContent({ ...content, hero: { ...content.hero, mottoLead } })} multiline />
+              <Field label="Motto — druhá věta" value={content.hero.mottoAccent} onChange={(mottoAccent) => setContent({ ...content, hero: { ...content.hero, mottoAccent } })} multiline />
               <Field label="Tlačítko v menu" value={content.nav.cta} onChange={(cta) => setContent({ ...content, nav: { ...content.nav, cta } })} />
               <Field label="Popisek aktuální kolekce" value={content.featured.label} onChange={(label) => setContent({ ...content, featured: { ...content.featured, label } })} />
+              <Field label="Popisek další kolekce" value={content.featured.otherLabel} onChange={(otherLabel) => setContent({ ...content, featured: { ...content.featured, otherLabel } })} />
               <Field label="Odkaz na všechny kolekce" value={content.featured.allCollections} onChange={(allCollections) => setContent({ ...content, featured: { ...content.featured, allCollections } })} />
             </div>
           ) : null}

@@ -7,7 +7,7 @@ import { getCollectionBySlug, getModelBySlug } from "./content/collections";
 import { publishedCollections } from "./content/site";
 import { useSiteContent } from "./content/SiteContent";
 
-const assetPathPrefix = "/assets";
+const assetPathPrefix = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/assets`;
 const imgHeaderLogo = `${assetPathPrefix}/727b1.png`;
 const imgSectionIntroSplash = `${assetPathPrefix}/uvod-hero-v7.png`;
 const imgStorefrontCurtains = `${assetPathPrefix}/vylaha-zavesy-vlevo.jpg`;
@@ -405,6 +405,7 @@ export default function App() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [formStatus, setFormStatus] = useState<"idle" | "sending" | "sent" | "activate" | "error">("idle");
   const [doorsOpen, setDoorsOpen] = useState(false);
+  const [mottoVisible, setMottoVisible] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [legalPage, setLegalPage] = useState<"gdpr" | "terms" | null>(null);
   const [pageView, setPageView] = useState<"home" | "collections" | "contact" | "about" | "help">("home");
@@ -416,7 +417,7 @@ export default function App() {
   const curtainsReady = useImageReady(imgStorefrontCurtains);
   const introReady = useImageReady(imgSectionIntroSplash);
   const { content, collections } = useSiteContent();
-  const featuredCollection = publishedCollections(content)[0];
+  const listedCollections = publishedCollections(content);
 
   async function handleContactSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -455,6 +456,20 @@ export default function App() {
       setFormStatus("error");
     }
   }
+
+  useEffect(() => {
+    if (!doorsOpen) {
+      setMottoVisible(false);
+      return;
+    }
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      setMottoVisible(true);
+      return;
+    }
+    const timer = window.setTimeout(() => setMottoVisible(true), 3600);
+    return () => window.clearTimeout(timer);
+  }, [doorsOpen]);
 
   useEffect(() => {
     if (!curtainsReady || !introReady) return;
@@ -633,7 +648,7 @@ export default function App() {
         <div className="storefront-photo absolute inset-0">
           <img
             alt="Pohled do ateliéru MiK"
-            className="absolute inset-0 h-full w-full object-cover object-center bg-[#e6d4ae]"
+            className="absolute inset-0 h-full w-full object-cover object-[54%_40%] sm:object-[48%_48%] bg-[#e6d4ae]"
             src={imgSectionIntroSplash}
             fetchPriority="high"
             decoding="async"
@@ -707,47 +722,70 @@ export default function App() {
 
           <div className={`absolute top-0 bottom-0 left-1/2 z-10 w-[3px] -translate-x-1/2 transition-opacity duration-[1400ms] ${doorsOpen ? "opacity-0" : "opacity-100"}`} style={{ backgroundImage: "linear-gradient(180deg, rgba(195,160,107,0) 0%, rgba(247,240,230,0.8) 15%, rgb(255,232,160) 35%, rgb(255,250,224) 50%, rgb(255,232,160) 65%, rgba(247,240,230,0.8) 85%, rgba(195,160,107,0) 100%)" }} />
         </div>
-      </section>
 
-      {featuredCollection ? (
-        <section className="relative overflow-hidden bg-black px-5 sm:px-10 lg:px-20 py-24 lg:py-[140px]">
-          <div className="relative z-10 max-w-[1440px] mx-auto flex flex-col gap-10 lg:gap-16">
-            <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6">
-              <div className="flex flex-col gap-4 max-w-[700px]">
-                <SectionLabel className="text-[#f50067]">
-                  {content.featured.label}
-                </SectionLabel>
-                <h2 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.15] text-[#e6d4ae] text-[32px] sm:text-5xl lg:text-[64px]">
-                  {featuredCollection.name}
-                </h2>
-                {featuredCollection.intro ? (
-                  <p className="font-['Manrope:Regular'] font-normal leading-[1.6] text-[#e6d4ae] text-[15px] sm:text-[18px] opacity-80">
-                    {featuredCollection.intro}
+        {content.hero.mottoLead || content.hero.mottoAccent ? (
+          <div
+            className={`hero-motto absolute z-30 pointer-events-none transition-opacity duration-700 ${mottoVisible ? "opacity-100" : "opacity-0"}`}
+            aria-label="Motto"
+          >
+            <blockquote className="m-0 border-0 border-l-[3px] border-solid border-[#f50067] bg-transparent py-0.5 pl-4 shadow-none sm:pl-5">
+              <div className="flex flex-col gap-0.5 text-left font-['Cormorant_Garamond:Italic'] font-normal italic leading-[1.28] text-[#f50067] text-[clamp(14px,1.55vw,22px)]">
+                {content.hero.mottoLead ? (
+                  <p>„{content.hero.mottoLead}{content.hero.mottoAccent ? "" : "\""}</p>
+                ) : null}
+                {content.hero.mottoAccent ? (
+                  <p>
+                    {content.hero.mottoLead ? "" : "„"}
+                    {content.hero.mottoAccent}"
                   </p>
                 ) : null}
               </div>
-              <a
-                href="#kolekce"
-                className="border border-[#c3a06b] px-6 sm:px-9 py-3 sm:py-4 font-['Manrope:Bold'] font-bold text-[#e6d4ae] text-[12px] sm:text-[14px] tracking-[1.5px] sm:tracking-[2px] uppercase text-center w-full sm:w-auto shrink-0 hover:bg-[#c3a06b] hover:text-[#1b1412] transition-colors"
-              >
-                {content.featured.allCollections}
-              </a>
-            </div>
-            <div className="mx-auto grid w-full max-w-[1040px] grid-cols-3 gap-2 sm:gap-6 md:gap-8">
-              {featuredCollection.models.map((model) => (
-                <a
-                  key={model.id}
-                  href={`#kolekce/${featuredCollection.slug}/${model.slug}`}
-                  className="group relative aspect-[9/16] overflow-hidden border border-[#c3a06b] bg-black"
-                >
-                  <img
-                    alt={model.name}
-                    className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.07]"
-                    src={model.coverImage}
-                  />
-                </a>
-              ))}
-            </div>
+            </blockquote>
+          </div>
+        ) : null}
+      </section>
+
+      {listedCollections.length > 0 ? (
+        <section className="relative overflow-hidden bg-black px-5 sm:px-10 lg:px-20 py-24 lg:py-[140px]">
+          <div className="relative z-10 max-w-[1440px] mx-auto flex flex-col gap-24 lg:gap-32">
+            {listedCollections.map((collection, collectionIndex) => (
+              <article key={collection.id} className="flex flex-col gap-10 lg:gap-16">
+                <div className="flex flex-col gap-4 max-w-[700px]">
+                  <SectionLabel className="text-[#f50067]">
+                    {collectionIndex === 0 ? content.featured.label : content.featured.otherLabel || "Kolekce 2026"}
+                  </SectionLabel>
+                  <h2 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.15] text-[#e6d4ae] text-[32px] sm:text-5xl lg:text-[64px]">
+                    {collection.name}
+                  </h2>
+                  {collection.intro ? (
+                    <p className="font-['Manrope:Regular'] font-normal leading-[1.6] text-[#e6d4ae] text-[15px] sm:text-[18px] opacity-80">
+                      {collection.intro}
+                    </p>
+                  ) : null}
+                </div>
+                <div className="mx-auto grid w-full max-w-[1040px] grid-cols-3 gap-2 sm:gap-6 md:gap-8">
+                  {collection.models.map((model) => (
+                    <a
+                      key={model.id}
+                      href={`#kolekce/${collection.slug}/${model.slug}`}
+                      className="group relative aspect-[9/16] overflow-hidden border border-[#c3a06b] bg-black"
+                    >
+                      {model.coverImage ? (
+                        <img
+                          alt={model.name}
+                          className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.07]"
+                          src={model.coverImage}
+                        />
+                      ) : (
+                        <p className="absolute inset-0 flex items-center justify-center px-3 font-['Manrope:SemiBold'] text-[11px] tracking-[2px] uppercase text-[#e6d4ae]/40 text-center">
+                          Připravujeme
+                        </p>
+                      )}
+                    </a>
+                  ))}
+                </div>
+              </article>
+            ))}
           </div>
         </section>
       ) : null}
@@ -832,8 +870,6 @@ export default function App() {
         </div>
       </section>
       )}
-
-      <HelpStoriesSection />
       </div>
 
       {pageView === "about" ? <BrandStorySection id="pribehy" minFullPage /> : null}

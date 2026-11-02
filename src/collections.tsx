@@ -29,7 +29,7 @@ export function CollectionsIndex() {
                 <div className="flex items-center gap-3 text-[#f50067]">
                   <span aria-hidden className="h-px w-8 shrink-0 bg-current" />
                   <p className="font-['Manrope:Bold'] font-bold text-[12px] sm:text-[13px] tracking-[1.5px] sm:tracking-[2px] uppercase">
-                    {collectionIndex === 0 ? content.featured.label : "Kolekce"}
+                    {collectionIndex === 0 ? content.featured.label : content.featured.otherLabel || "Kolekce 2026"}
                   </p>
                 </div>
                 <h1 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.15] text-[#e6d4ae] text-[32px] sm:text-5xl lg:text-[64px] break-words">
@@ -48,11 +48,17 @@ export function CollectionsIndex() {
                     href={`#kolekce/${collection.slug}/${model.slug}`}
                     className="group relative aspect-[9/16] overflow-hidden border border-[#c3a06b] bg-black"
                   >
+                    {model.coverImage ? (
                     <img
                       alt={model.name}
                       className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.07]"
                       src={model.coverImage}
                     />
+                    ) : (
+                      <p className="absolute inset-0 flex items-center justify-center px-3 font-['Manrope:SemiBold'] text-[11px] tracking-[2px] uppercase text-[#e6d4ae]/40 text-center">
+                        Připravujeme
+                      </p>
+                    )}
                   </a>
                 ))}
               </div>
@@ -71,6 +77,9 @@ export function CollectionPage({
   collection: Collection;
   modelSlug: string | null;
 }) {
+  const { content, collections: allCollections } = useSiteContent();
+  const published = getPublishedCollections(allCollections);
+  const collectionLabel = published[0]?.id === collection.id ? content.featured.label : (content.featured.otherLabel || "Kolekce 2026");
   const activeModel = modelSlug ? collection.models.find((item) => item.slug === modelSlug) : undefined;
 
   useEffect(() => {
@@ -96,7 +105,7 @@ export function CollectionPage({
               <div className="flex items-center gap-3 text-[#f50067]">
                 <span aria-hidden className="h-px w-8 shrink-0 bg-current" />
                 <p className="font-['Manrope:Bold'] font-bold text-[12px] sm:text-[13px] tracking-[1.5px] sm:tracking-[2px] uppercase">
-                  Kolekce
+                  {collectionLabel}
                 </p>
               </div>
               <h1 className="font-['Cormorant_Garamond:Regular'] font-normal leading-[1.1] text-[#e6d4ae] text-4xl lg:text-[64px]">

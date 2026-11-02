@@ -54,7 +54,10 @@ function loadContent() {
     help: { ...base.help, ...overlay.help },
     contact: { ...base.contact, ...overlay.contact },
     footer: { ...base.footer, ...overlay.footer },
-    collections: Array.isArray(overlay.collections) ? overlay.collections : base.collections,
+    collections:
+      Array.isArray(overlay.collections) && overlay.collections.some((item) => item?.id === "vstupme-do-zare")
+        ? overlay.collections
+        : base.collections,
   };
 }
 
