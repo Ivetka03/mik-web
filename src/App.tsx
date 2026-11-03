@@ -728,8 +728,8 @@ export default function App() {
             className={`hero-motto absolute z-30 pointer-events-none transition-opacity duration-700 ${mottoVisible ? "opacity-100" : "opacity-0"}`}
             aria-label="Motto"
           >
-            <blockquote className="m-0 border-0 border-l-[3px] border-solid border-[#f50067] bg-transparent py-0.5 pl-4 shadow-none sm:pl-5">
-              <div className="flex flex-col gap-0.5 text-left font-['Cormorant_Garamond:Italic'] font-normal italic leading-[1.28] text-[#f50067] text-[clamp(14px,1.55vw,22px)]">
+            <blockquote className="m-0 border-0 border-l-[3px] border-solid border-[#f50067] bg-transparent py-0.5 pl-3 shadow-none sm:pl-5">
+              <div className="flex flex-col gap-0.5 text-left font-['Cormorant_Garamond:Italic'] font-normal italic leading-[1.28] text-[#f50067] text-[clamp(13px,3.4vw,22px)] sm:text-[clamp(14px,1.55vw,22px)]">
                 {content.hero.mottoLead ? (
                   <p>„{content.hero.mottoLead}{content.hero.mottoAccent ? "" : "\""}</p>
                 ) : null}

@@ -50,14 +50,11 @@ function loadContent() {
     hero: { ...base.hero, ...overlay.hero },
     nav: { ...base.nav, ...overlay.nav },
     featured: { ...base.featured, ...overlay.featured },
-    about: { ...base.about, ...overlay.about },
+    about: { ...base.about, ...overlay.about, paragraphs: base.about.paragraphs },
     help: { ...base.help, ...overlay.help },
     contact: { ...base.contact, ...overlay.contact },
     footer: { ...base.footer, ...overlay.footer },
-    collections:
-      Array.isArray(overlay.collections) && overlay.collections.some((item) => item?.id === "vstupme-do-zare")
-        ? overlay.collections
-        : base.collections,
+    collections: base.collections,
   };
 }
 

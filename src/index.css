@@ -126,18 +126,23 @@ body,
   background-color: #e6d4ae;
 }
 
-/* Motto sits on the white door panel beside the figure — never over glass or the body. */
+/* Motto sits on the white door panel beside the figure — never over glass, the body, or the screen edge. */
 .hero-motto {
-  left: 56%;
-  top: 56%;
-  width: 11.25rem;
+  left: 52%;
+  right: 0.7rem;
+  top: 54%;
+  width: auto;
+  max-width: 11.25rem;
+  box-sizing: border-box;
 }
 
 @media (min-width: 640px) {
   .hero-motto {
     left: 61%;
+    right: auto;
     top: 55%;
     width: 12rem;
+    max-width: none;
   }
 }
 
