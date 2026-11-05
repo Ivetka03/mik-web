@@ -55,7 +55,7 @@
       "slug": "vstupme-do-zare",
       "name": "Vstupme do záře",
       "intro": "Stejně jako podzim, který září barvami, pojďme i my ženy zářit tím světlem, které v sobě máme, když se cítíme dobře, sebejistě a radostně.",
-      "coverImage": "/assets/Dac_1.jpg",
+      "coverImage": "/assets/Dac_1.png",
       "published": true,
       "models": [
         {
@@ -63,9 +63,9 @@
           "slug": "dac",
           "name": "Dac",
           "description": "",
-          "coverImage": "/assets/Dac_1.jpg",
+          "coverImage": "/assets/Dac_1.png",
           "images": [
-            "/assets/Dac_1.jpg",
+            "/assets/Dac_1.png",
             "/assets/Dac_2.png",
             "/assets/Dac_3.png",
             "/assets/Dac_4.png",
