@@ -77,10 +77,11 @@
           "slug": "zelene",
           "name": "Zafira",
           "description": "",
-          "coverImage": "/assets/Zelene_1.png",
+          "coverImage": "/assets/Zafira_1.png",
           "images": [
-            "/assets/Zelene_1.png",
-            "/assets/Zelene_2.png"
+            "/assets/Zafira_1.png",
+            "/assets/Zafira_2.png",
+            "/assets/Zafira_3.png"
           ]
         },
         {
