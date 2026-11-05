@@ -47,7 +47,12 @@ function loadContent() {
   return {
     ...base,
     ...overlay,
-    hero: { ...base.hero, ...overlay.hero },
+    hero: {
+      ...base.hero,
+      ...overlay.hero,
+      mottoLead: base.hero.mottoLead,
+      mottoAccent: base.hero.mottoAccent,
+    },
     nav: { ...base.nav, ...overlay.nav },
     featured: { ...base.featured, ...overlay.featured },
     about: { ...base.about, ...overlay.about, paragraphs: base.about.paragraphs },

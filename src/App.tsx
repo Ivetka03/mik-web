@@ -463,12 +463,14 @@ export default function App() {
       return;
     }
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
-      setMottoVisible(true);
-      return;
-    }
-    const timer = window.setTimeout(() => setMottoVisible(true), 3600);
-    return () => window.clearTimeout(timer);
+    const showAfter = reduced ? 400 : 1700;
+    const hideAfter = showAfter + 8000;
+    const showTimer = window.setTimeout(() => setMottoVisible(true), showAfter);
+    const hideTimer = window.setTimeout(() => setMottoVisible(false), hideAfter);
+    return () => {
+      window.clearTimeout(showTimer);
+      window.clearTimeout(hideTimer);
+    };
   }, [doorsOpen]);
 
   useEffect(() => {
@@ -725,22 +727,18 @@ export default function App() {
 
         {content.hero.mottoLead || content.hero.mottoAccent ? (
           <div
-            className={`hero-motto absolute z-30 pointer-events-none transition-opacity duration-700 ${mottoVisible ? "opacity-100" : "opacity-0"}`}
+            className={`absolute inset-x-0 bottom-0 z-30 pointer-events-none border-t border-[#c3a06b] isolate mix-blend-normal transition-opacity duration-700 ${mottoVisible ? "opacity-100" : "opacity-0"}`}
+            style={goldSurface}
             aria-label="Motto"
           >
-            <blockquote className="m-0 border-0 border-l-[3px] border-solid border-[#f50067] bg-transparent py-0.5 pl-3 shadow-none sm:pl-5">
-              <div className="flex flex-col gap-0.5 text-left font-['Cormorant_Garamond:Italic'] font-normal italic leading-[1.28] text-[#f50067] text-[clamp(13px,3.4vw,22px)] sm:text-[clamp(14px,1.55vw,22px)]">
-                {content.hero.mottoLead ? (
-                  <p>„{content.hero.mottoLead}{content.hero.mottoAccent ? "" : "\""}</p>
-                ) : null}
-                {content.hero.mottoAccent ? (
-                  <p>
-                    {content.hero.mottoLead ? "" : "„"}
-                    {content.hero.mottoAccent}"
-                  </p>
-                ) : null}
-              </div>
-            </blockquote>
+            <div className="mx-auto box-border min-h-[76px] sm:min-h-[84px] w-full max-w-[1440px] px-5 sm:px-10 lg:px-20 py-3.5 text-center font-['Cormorant_Garamond:SemiBold'] font-semibold italic leading-[1.35] text-[#f50067] text-[13px] sm:text-[clamp(16px,1.9vw,22px)]">
+              {content.hero.mottoLead ? (
+                <p>{content.hero.mottoAccent ? `„${content.hero.mottoLead}` : `„${content.hero.mottoLead}“`}</p>
+              ) : null}
+              {content.hero.mottoAccent ? (
+                <p>{content.hero.mottoLead ? `${content.hero.mottoAccent}“` : `„${content.hero.mottoAccent}“`}</p>
+              ) : null}
+            </div>
           </div>
         ) : null}
       </section>
