@@ -731,7 +731,7 @@ export default function App() {
             style={goldSurface}
             aria-label="Motto"
           >
-            <div className="mx-auto box-border min-h-[76px] sm:min-h-[84px] w-full max-w-[1440px] px-5 sm:px-10 lg:px-20 py-3.5 text-center font-['Cormorant_Garamond:SemiBold'] font-semibold italic leading-[1.35] text-[#f50067] text-[13px] sm:text-[clamp(16px,1.9vw,22px)]">
+            <div className="mx-auto box-border min-h-[76px] sm:min-h-[84px] w-full max-w-[1440px] px-4 sm:px-10 lg:px-20 py-3.5 text-center font-['Cormorant_Garamond:SemiBold'] font-semibold italic leading-[1.4] text-[#f50067] text-[18px] sm:text-[clamp(17px,1.9vw,22px)] sm:leading-[1.35]">
               {content.hero.mottoLead ? (
                 <p>{content.hero.mottoAccent ? `„${content.hero.mottoLead}` : `„${content.hero.mottoLead}“`}</p>
               ) : null}
