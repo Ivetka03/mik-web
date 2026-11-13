@@ -89,11 +89,11 @@
           "slug": "tussah",
           "name": "Tussah",
           "description": "",
-          "coverImage": "/assets/Tussah_1.png",
+          "coverImage": "/assets/Tussah_1.jpg",
           "images": [
-            "/assets/Tussah_1.png",
-            "/assets/Tussah_2.png",
-            "/assets/Tussah_3.png"
+            "/assets/Tussah_1.jpg",
+            "/assets/Tussah_2.jpg",
+            "/assets/Tussah_3.jpg"
           ]
         }
       ]
