@@ -641,7 +641,7 @@ export default function App() {
         )}
       </header>
 
-      {pageView === "collections" ? <CollectionsIndex /> : null}
+      {pageView === "collections" && !collectionRoute.modelSlug ? <CollectionsIndex /> : null}
 
       <div className={pageView !== "home" ? "hidden" : undefined}>
       {/* HERO SPLASH — self-opening storefront */}

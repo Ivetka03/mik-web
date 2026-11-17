@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import mikLogoMask from "./assets/mik-logo-mask.png";
 import {
   getModelGallery,
   getPublishedCollections,
@@ -7,6 +8,12 @@ import {
   type FashionModel,
 } from "./content/collections";
 import { useSiteContent } from "./content/SiteContent";
+
+const goldSurface = {
+  backgroundColor: "rgb(213, 188, 121)",
+  backgroundImage:
+    "linear-gradient(115deg, rgba(255,247,217,0) 16%, rgba(255,250,229,0.22) 50%, rgba(255,247,217,0) 84%)",
+};
 
 function setCollectionHash(collectionSlug: string, modelSlug?: string) {
   const hash = modelSlug ? `#kolekce/${collectionSlug}/${modelSlug}` : `#kolekce/${collectionSlug}`;
@@ -254,27 +261,50 @@ export function ModelGallery({
   }, [collection, lightboxIndex, model.slug, onClose, photosLength]);
 
   return (
-    <div className="fixed inset-0 z-[80] bg-black flex flex-col" role="dialog" aria-modal="true" aria-label={model.name}>
-      <div className="flex items-center justify-between gap-4 px-5 sm:px-10 py-5 border-b border-[#c3a06b]/40 shrink-0">
-        <div className="min-w-0">
-          <p className="font-['Manrope:Bold'] font-bold text-[#c3a06b] text-[11px] tracking-[2px] uppercase truncate">
-            {collection.name}
-          </p>
-          <h2 className="font-['Cormorant_Garamond:Regular'] text-[#e6d4ae] text-2xl sm:text-3xl truncate">
-            {model.name}
-          </h2>
+    <div className="fixed inset-0 z-[100] bg-black flex flex-col" role="dialog" aria-modal="true" aria-label={model.name}>
+      <header
+        className="mik-site-header border-b border-[#c3a06b] relative z-20 shrink-0 isolate"
+        style={{ ...goldSurface, minHeight: 76 }}
+      >
+        <div className="max-w-[1440px] mx-auto h-full px-5 sm:px-10 lg:px-20 flex items-center justify-between gap-3">
+          <a href="#uvod" className="relative z-[1] h-11 w-[128px] sm:h-12 sm:w-[150px] shrink-0 overflow-visible" aria-label="MiK — úvodní stránka">
+            <div
+              className="mik-brand-mark pointer-events-none absolute left-1/2 top-1/2 h-[92px] w-[168px] sm:h-[100px] sm:w-[182px] -translate-x-1/2 -translate-y-1/2 bg-[#f50067]"
+              style={{
+                WebkitMaskImage: `url(${mikLogoMask})`,
+                maskImage: `url(${mikLogoMask})`,
+              }}
+            />
+          </a>
+          <button
+            type="button"
+            className="relative z-[1] flex h-11 w-11 shrink-0 items-center justify-center"
+            aria-label={lightboxSrc ? "Zavřít fotografii" : "Zavřít náhled modelu"}
+            onClick={() => {
+              if (lightboxSrc) {
+                closeLightbox();
+                return;
+              }
+              onClose();
+            }}
+          >
+            <span className="absolute block h-[1.5px] w-5 bg-[#7a4e38] rotate-45" />
+            <span className="absolute block h-[1.5px] w-5 bg-[#7a4e38] -rotate-45" />
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={onClose}
-          className="shrink-0 border border-[#c3a06b] px-4 sm:px-5 py-2.5 font-['Manrope:Bold'] font-bold text-[#e6d4ae] text-[11px] sm:text-[12px] tracking-[1.5px] uppercase hover:bg-[#c3a06b] hover:text-[#1b1412] transition-colors"
-        >
-          Zpět ke kolekci
-        </button>
-      </div>
+      </header>
 
+      <div className="relative flex-1 min-h-0 flex flex-col">
       <div className="flex-1 min-h-0 overflow-y-auto">
         <div className="px-3 sm:px-6 lg:px-10 py-6 lg:py-10">
+          <div className="mx-auto mb-6 max-w-[1440px] px-2 sm:px-0">
+            <p className="font-['Manrope:Bold'] font-bold text-[#c3a06b] text-[11px] tracking-[2px] uppercase">
+              {collection.name}
+            </p>
+            <h2 className="font-['Cormorant_Garamond:Regular'] text-[#e6d4ae] text-2xl sm:text-3xl">
+              {model.name}
+            </h2>
+          </div>
           <div className="mx-auto flex w-full max-w-[1440px] flex-wrap justify-center gap-1 sm:gap-2">
             {photos.map((src, photoIndex) => (
               <button
@@ -324,7 +354,7 @@ export function ModelGallery({
 
       {lightboxSrc ? (
         <div
-          className={`mik-lightbox fixed inset-0 z-[90] bg-black ${lightboxOpen ? "is-open" : ""}`}
+          className={`mik-lightbox absolute inset-0 z-10 bg-black ${lightboxOpen ? "is-open" : ""}`}
           role="dialog"
           aria-modal="true"
           aria-label={`${model.name} — zvětšená fotografie`}
@@ -346,21 +376,9 @@ export function ModelGallery({
             if (delta < -56) stepLightbox(1);
           }}
         >
-          <div
-            className="absolute top-0 inset-x-0 z-10 flex items-center justify-between gap-4 px-5 sm:px-10 py-5 bg-gradient-to-b from-black/80 to-transparent"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <p className="font-['Manrope:Regular'] text-[#e6d4ae] text-[13px] tracking-[1.5px] uppercase">
-              {(lightboxIndex ?? 0) + 1} / {photosLength}
-            </p>
-            <button
-              type="button"
-              onClick={closeLightbox}
-              className="shrink-0 border border-[#c3a06b] px-4 sm:px-5 py-2.5 font-['Manrope:Bold'] font-bold text-[#e6d4ae] text-[11px] sm:text-[12px] tracking-[1.5px] uppercase hover:bg-[#c3a06b] hover:text-[#1b1412] transition-colors"
-            >
-              Zavřít
-            </button>
-          </div>
+          <p className="pointer-events-none absolute bottom-5 left-1/2 z-10 -translate-x-1/2 font-['Manrope:Regular'] text-[#e6d4ae] text-[13px] tracking-[1.5px] uppercase">
+            {(lightboxIndex ?? 0) + 1} / {photosLength}
+          </p>
           {photosLength > 1 ? (
             <button
               type="button"
@@ -400,6 +418,7 @@ export function ModelGallery({
           ) : null}
         </div>
       ) : null}
+      </div>
     </div>
   );
 }
